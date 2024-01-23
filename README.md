@@ -20,6 +20,10 @@ $ pnpm install
 # Subir o container do Docker com banco de dados 
 $ docker compose up -d
 
+
+# Crie as variáveis de ambiente, um arquivo .env na raiz do projeto.
+$ Veja o exemplo no arquivo ./env.example
+
 # Execute a aplicação em modo de desenvolvimento
 $ pnpm run dev
 
