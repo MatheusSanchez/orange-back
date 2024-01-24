@@ -14,16 +14,19 @@
     "@rocketseat/eslint-config": "^2.1.0",
     "@types/node": "^20.11.5",
     "eslint": "8.52.0",
+    "prisma": "5.8.1",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@prisma/client": "5.8.1",
     "@types/express": "^4.17.21",
     "dotenv": "^16.3.2",
-    "express": "^4.18.2",
+    "fastify": "^4.25.2",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.1",
     "sequelize": "^6.35.2",
     "zod": "^3.22.4"
   }

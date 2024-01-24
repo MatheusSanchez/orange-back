@@ -1,3 +1,5 @@
-import express from 'express'
+import fastify from "fastify";
+import { prisma } from "./lib/prisma";
 
-export const app = express()
+export const app = fastify()
+
