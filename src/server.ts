@@ -1,19 +1,16 @@
 import { app } from './app'
 import { env } from './env'
-import { sequelize } from './lib/sequelize'
+import { prisma } from './lib/prisma'
 
 app.get('/', async (req, res) => {
-  sequelize
-    .getQueryInterface()
-    .showAllSchemas()
-    .then((tableObj) => {
-      console.log('Tables in database', '==========================')
-      console.log(tableObj)
-    })
-    .catch((err) => {
-      console.log('showAllSchemas ERROR', err)
-    })
-
+  const user = await prisma.user.create({
+    data: {
+      name: 'Max',
+      surname: 'Sousa',
+      email: 'max@email.com',
+      password_hash: '123',
+    }
+  })
   res.send('Lets go Força da Natureza!')
 })
 
