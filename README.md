@@ -28,6 +28,11 @@ $ Veja o exemplo no arquivo ./env.example
 # Gere o client do Prisma 
 $ pnpm prisma generate
 
+
+# Execute as Migrations
+$ pnpx prisma migrate dev
+
+
 # Execute a aplicação em modo de desenvolvimento
 $ pnpm run dev
 
