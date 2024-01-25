@@ -12,7 +12,6 @@ export class PrismaUsersRepository implements UserRepository {
 
     return user
   }
-  
   async findById(id: string): Promise<{ id: string; name: string; surname: string; email: string; password_hash: string; created_at: Date; updated_at: Date; } | null> {
     throw new Error('Method not implemented.');
   }
