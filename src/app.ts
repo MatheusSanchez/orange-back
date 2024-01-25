@@ -2,12 +2,12 @@ import fastify from 'fastify'
 import { userRoutes } from './controller/user/routes'
 import { env } from './env'
 import { ZodError } from 'zod'
+import { authRoutes } from './controller/session/routes'
 
 
 export const app = fastify()
 app.register(userRoutes)
-
-
+app.register(authRoutes)
 
 app.setErrorHandler((error, _, response) => {
   if (env.NODE_ENV !== 'production') {
