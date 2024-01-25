@@ -1,0 +1,34 @@
+name: Run E2E Tests
+
+on: [push]
+
+jobs:
+  run-e2e-tests:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports:
+          - 8080:5432
+        env:
+          POSTGRESQL_USERNAME: docker
+          POSTGRESQL_PASSWORD: docker
+          POSTGRESQL_DATABASE: orange-db
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+
+      - run: pnpm install
+      - run: pnpm prisma generate
+
+      - run: pnpm run test:e2e
+
+        env:
+          DATABASE_URL: "postgresql://docker:docker@localhost:8080/orange-db?schema=public"
+          
