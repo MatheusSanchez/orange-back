@@ -4,7 +4,7 @@ import { getUserByEmail } from "./getUserByEmail";
 import { registerUser } from "./registerUser";
 
 export async function userRoutes(app: FastifyInstance) {
-  app.post("/users", registerUser);
+  app.post('/user', registerUser);
   app.get("/user/:id", getUserById);
-  app.get("/user", getUserByEmail);
+  app.get("/user", getUserByEmail); 
 }
