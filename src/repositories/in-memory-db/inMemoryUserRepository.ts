@@ -29,7 +29,7 @@ export class InMemoryUserRepository implements UserRepository {
   })
 
   }
-
+  
   async findByEmail(email: string): Promise<User | null> {
     const User = this.db.find((User) => User.email === email)
 
