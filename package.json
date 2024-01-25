@@ -5,18 +5,24 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "test:coverage": "vitest run --coverage",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run --dir src/use-cases",
+    "test:create-prisma-environment": "pnpm link ./prisma/vitest-environment-prisma",
+    "test:install-prisma-environment": "pnpm link vitest-environment-prisma",
+    "test:watch": "vitest --dir src/use-cases",
+    "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
+    "test:e2e": "vitest run --dir src/controller",
+    "test:e2e:watch": "vitest --dir src/controller",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
-    "@types/node": "^20.11.5",
+    "@types/node": "^20.11.6",
     "@vitest/coverage-v8": "^1.2.1",
     "eslint": "8.52.0",
+    "npm-run-all": "^4.1.5",
     "prisma": "5.8.1",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
@@ -28,10 +34,11 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "bcryptjs": "^2.4.3",
-    "dotenv": "^16.3.2",
+    "dotenv": "^16.4.1",
     "fastify": "^4.25.2",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
+    "vite-tsconfig-paths": "^4.3.1",
     "zod": "^3.22.4"
   }
 }

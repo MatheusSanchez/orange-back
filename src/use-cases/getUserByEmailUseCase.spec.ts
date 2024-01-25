@@ -1,4 +1,4 @@
-import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
+  import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
 import { describe, expect, beforeEach, it } from 'vitest'
 import { hash } from 'bcryptjs'
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
