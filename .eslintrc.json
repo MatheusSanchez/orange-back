@@ -1,7 +1,5 @@
 {
     "extends": [
         "@rocketseat/eslint-config/node"
-    ],
-    "camelcase": "off'",
-    "no-useless-constructor": "off"
+    ]
 }
