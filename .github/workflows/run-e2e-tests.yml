@@ -6,8 +6,6 @@ jobs:
   run-e2e-tests:
     name: Run E2E Tests
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: "postgresql://docker:docker@localhost:8080/orange-db?schema=public"
 
     services:
       postgres:
@@ -25,13 +23,12 @@ jobs:
         with:
           version: 8
       - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'pnpm'
 
       - run: pnpm install
+      - run: pnpm prisma generate
 
-      - run: pnpm run pretest:e2e
       - run: pnpm run test:e2e
 
-      
+        env:
+          DATABASE_URL: "postgresql://docker:docker@localhost:8080/orange-db?schema=public"
+          
