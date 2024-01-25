@@ -8,7 +8,6 @@ export const app = fastify()
 app.register(userRoutes)
 
 
-
 app.setErrorHandler((error, _, response) => {
   if (env.NODE_ENV !== 'production') {
     console.error(error)
