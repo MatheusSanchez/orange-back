@@ -16,10 +16,9 @@ model User {
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
-  addProjects   AddProject[]
+  projects      Project[]
 }
-
-model AddProject {
+model Project {
   id            String   @id @default(uuid())
   title         String
   tags          String
