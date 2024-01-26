@@ -11,6 +11,7 @@
     "test:watch": "vitest --dir src/use-cases",
     "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
     "test:e2e": "vitest run --dir src/controller",
+    "test:e2e:coverage": "vitest run --dir src/controller --coverage",
     "test:e2e:watch": "vitest --dir src/controller",
     "test:coverage": "vitest run --coverage"
   },
