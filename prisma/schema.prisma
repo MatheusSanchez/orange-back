@@ -15,4 +15,18 @@ model User {
   password_hash String
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+
+  projects      Project[]
+}
+model Project {
+  id            String   @id @default(uuid())
+  title         String
+  tags          String
+  link          String
+  description   String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  user          User   @relation(fields: [user_id], references: [id])
+  user_id       String
 }
