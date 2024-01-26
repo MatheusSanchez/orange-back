@@ -2,11 +2,14 @@ import fastify from 'fastify'
 import { userRoutes } from './controller/user/routes'
 import { env } from './env'
 import { ZodError } from 'zod'
-
+import cors from '@fastify/cors'
 
 export const app = fastify()
-app.register(userRoutes)
 
+app.register(cors, {
+  origin: ['http://127.0.0.1:5173', 'http://localhost:5173'],
+})
+app.register(userRoutes)
 
 app.setErrorHandler((error, _, response) => {
   if (env.NODE_ENV !== 'production') {
