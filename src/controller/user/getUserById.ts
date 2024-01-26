@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { z } from 'zod'
 import { GetUserByIdUseCase } from '../../use-cases/getUserByIdUseCase'
+import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
+import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
 
 export async function getUserById(
   request: FastifyRequest,
   response: FastifyReply,
 ) {
-  
-  const userRepository = new InMemoryUserRepository()
+  const userRepository = new PrismaUsersRepository()
   const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
 
   const getUserByIdBodySchema = z.object({
@@ -17,9 +17,14 @@ export async function getUserById(
 
   const { id } = getUserByIdBodySchema.parse(request.params)
 
-  const { user } = await getUserByIdUseCase.execute({
-    id,
-  })
-
-  return response.status(200).send({ user })
+  try {
+    const { user } = await getUserByIdUseCase.execute({
+      id,
+    })
+    return response.status(200).send({ user })
+  } catch (error) {
+    if (error instanceof ResourceNotFoundError) {
+      return response.status(404).send()
+    }
+  }
 }
