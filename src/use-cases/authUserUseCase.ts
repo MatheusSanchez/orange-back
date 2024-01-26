@@ -27,13 +27,13 @@ export class AuthUserUseCase {
 
     const passwordMatched = await compare(password, user.password_hash)
 
-    if (!passwordMatched) {
-      throw new ResourceNotFoundError()
-    }
-
-    // if (password !== user.password_hash) {
+    // if (!passwordMatched) {
     //   throw new ResourceNotFoundError()
     // }
+
+    if (password !== user.password_hash) {
+      throw new ResourceNotFoundError()
+    }
 
     return { user }
   }

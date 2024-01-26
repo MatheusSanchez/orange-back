@@ -2,6 +2,8 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { AuthUserUseCase } from '../../use-cases/authUserUseCase'
 import { z } from 'zod'
+// const { sign } = require('jsonwebtoken')
+// const authConfig = require('../../configs/auth')
 
 export async function authUser( 
   request: FastifyRequest,
@@ -20,5 +22,14 @@ export async function authUser(
 
   const { user } = await authUserUseCase.execute({ email, password })
 
-  return response.status(200).send({ user })    
+  const token = await response.jwtSign(
+    {},
+    {
+      sign: {
+        sub: user.id,
+      },
+    },
+  )
+
+  return response.status(200).send({ user, token })    
 }
