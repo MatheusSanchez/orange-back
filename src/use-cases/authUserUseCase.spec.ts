@@ -2,7 +2,7 @@ import { describe, expect, beforeEach, it } from 'vitest'
 import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
 import { AuthUserUseCase } from './authUserUseCase'
 import { compare, hash } from 'bcryptjs'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { InvalidCredentialsError } from './errors/InvalidCredentialsError'
 
 let userRepository: InMemoryUserRepository
 let authUserUseCase: AuthUserUseCase
@@ -57,7 +57,7 @@ describe('Get user by email and validate password', () => {
         email,
         password: passwordIncorrect,
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError) // need another error instance
+    ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 
   it('return an error message if the email entered is not correct', async () => {
@@ -80,6 +80,6 @@ describe('Get user by email and validate password', () => {
         email: emailIncorrect,
         password,
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError) // need another error instance
+    ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 })
