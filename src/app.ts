@@ -2,6 +2,8 @@ import fastify from 'fastify'
 import { userRoutes } from './controller/user/routes'
 import { env } from './env'
 import { ZodError } from 'zod'
+import { authRoutes } from './controller/session/routes'
+import fastifyJwt from '@fastify/jwt'
 import cors from '@fastify/cors'
 import { logMiddleware } from './controller/middlewares/logMiddleware'
 
@@ -12,6 +14,13 @@ app.register(cors, {
 })
 app.register(userRoutes)
 app.addHook('preHandler', logMiddleware)
+
+app.register(authRoutes)
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+})
+
 
 app.setErrorHandler((error, _, response) => {
   if (env.NODE_ENV !== 'production') {

@@ -31,4 +31,5 @@ jobs:
 
         env:
           DATABASE_URL: "postgresql://docker:docker@localhost:8080/orange-db?schema=public"
+          JWT_SECRET: "oPedroEhFeraMsmCaraEhDiferenciado"
           
