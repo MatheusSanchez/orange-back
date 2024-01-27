@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { AuthUserUseCase } from '../../use-cases/authUserUseCase'
 import { z } from 'zod'
+import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 
 export async function authUser( 
   request: FastifyRequest,
   response: FastifyReply,
 ) {
 
-  const userRepository = new InMemoryUserRepository()
+  const userRepository = new PrismaUsersRepository()
   const authUserUseCase = new AuthUserUseCase(userRepository)
 
   const AuthUserUseCaseSchema = z.object({

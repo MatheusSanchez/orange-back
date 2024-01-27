@@ -7,6 +7,5 @@ import { registerUser } from './registerUser'
 export async function userRoutes(app: FastifyInstance) {
   app.post('/user', registerUser)
   app.get('/user/:id', getUserById)
-  // app.get('/user', getUserByEmail)
-  app.get('/user', { onRequest: [verifyJWT] }, getUserByEmail)
+  app.get('/user', getUserByEmail)
 }

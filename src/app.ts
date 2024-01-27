@@ -15,10 +15,7 @@ app.register(userRoutes)
 app.register(authRoutes)
 
 app.register(fastifyJwt, {
-  secret: 'squad40',
-  // sign: {
-  //   expiresIn: '10s',
-  // },
+  secret: env.JWT_SECRET,
 })
 
 app.setErrorHandler((error, _, response) => {
