@@ -27,11 +27,7 @@ export class AuthUserUseCase {
 
     const passwordMatched = await compare(password, user.password_hash)
 
-    // if (!passwordMatched) {
-    // throw new InvalidCredentialsError('Email e/ou senha inválido.')
-    // }
-
-    if (password !== user.password_hash) {
+    if (!passwordMatched) {
       throw new InvalidCredentialsError('Email e/ou senha inválido.')
     }
 
