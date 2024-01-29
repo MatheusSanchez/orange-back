@@ -47,13 +47,13 @@ describe('Get User By email E2E', () => {
   })
 
   test('should not be able to get an user by e-mail that does not exist', async () => {
-    const email = 'john_doe@email.com'
+    const email = 'userwasnotregistered@email.com'
 
     const getUserByEmailResponse = await request(app.server)
       .get(`/user`)
       .query({ email })
 
-    expect(getUserByEmailResponse.statusCode).toEqual(200)
+    expect(getUserByEmailResponse.statusCode).toEqual(404)
     expect(getUserByEmailResponse.body.user).toEqual(
       expect.objectContaining({}),
     )

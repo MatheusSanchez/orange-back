@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { GetUserByEmailUseCase } from '../../use-cases/getUserByEmailUseCase'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
+import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
 
 export async function getUserByEmail(
   request: FastifyRequest,
@@ -16,9 +17,14 @@ export async function getUserByEmail(
 
   const { email } = getUserByEmailBodySchema.parse(request.query)
 
-  const { user } = await getUserByEmailUseCase.execute({
-    email,
-  })
-
-  return response.status(200).send({ user })
+  try {
+    const { user } = await getUserByEmailUseCase.execute({
+      email,
+    })
+    return response.status(200).send({ user })
+  } catch (error) {
+    if (error instanceof ResourceNotFoundError) {
+      return response.status(404).send()
+    }
+  }
 }
