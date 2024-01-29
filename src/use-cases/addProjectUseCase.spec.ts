@@ -4,16 +4,17 @@ import { CreateProjectUseCase } from './addProjectUseCase'
 
 import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
 import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
+import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
 
 let projectRepository: InMemoryProjectRepository
 let userRepository: InMemoryUserRepository
-let systemUnderTest: CreateProjectUseCase
+let createProjectUseCase: CreateProjectUseCase
 
 describe('Create Project Use Case', () => {
   beforeEach(() => {
     projectRepository = new InMemoryProjectRepository()
     userRepository = new InMemoryUserRepository()
-    systemUnderTest = new CreateProjectUseCase(
+    createProjectUseCase = new CreateProjectUseCase(
       projectRepository,
       userRepository,
     )
@@ -27,7 +28,7 @@ describe('Create Project Use Case', () => {
       password_hash: '123456',
     })
 
-    const { project } = await systemUnderTest.execute({
+    const { project } = await createProjectUseCase.execute({
       title: 'React Typescript',
       description: 'Melhor Projeto',
       tags: 'React, Node',
@@ -36,19 +37,18 @@ describe('Create Project Use Case', () => {
     })
 
     expect(project.id).toEqual(expect.any(String))
+    expect(project.title).toEqual('React Typescript')
   })
 
-  it('should not create a project if user does not exist', async () => {
-    try {
-      await systemUnderTest.execute({
+  it('should not be able to create a project if the user was not found.', async () => {
+    await expect(() =>
+      createProjectUseCase.execute({
         title: 'Project with nonexistent user',
         description: 'Project without a valid user',
         tags: 'Invalid, Project',
         link: 'https://github.com/example/project-with-nonexistent-user',
         userId: 'non-existent-UserId',
-      })
-    } catch (error) {
-      expect(error).toBeInstanceOf(Error)
-    }
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

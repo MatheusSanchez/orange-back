@@ -8,9 +8,7 @@ export class InMemoryProjectRepository implements ProjectRepository {
 
   constructor() {}
 
-  async create(
-    data: Prisma.ProjectCreateWithoutUserInput & { user_id: string },
-  ): Promise<Project> {
+  async create(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
     const project: Project = {
       id: data.id ?? randomUUID(),
       title: data.title,
