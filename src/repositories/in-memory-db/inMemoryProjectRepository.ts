@@ -24,4 +24,12 @@ export class InMemoryProjectRepository implements ProjectRepository {
 
     return project
   }
+
+  async fetchProjectsByUserId(userId: string): Promise<Project[]> {
+    const projects = this.dbProject.filter(
+      (project) => project.user_id === userId,
+    )
+
+    return projects
+  }
 }
