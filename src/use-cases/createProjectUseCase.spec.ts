@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { CreateProjectUseCase } from './addProjectUseCase'
+import { CreateProjectUseCase } from './createProjectUseCase'
 
 import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
 import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
