@@ -6,28 +6,10 @@ import { ProjectRepository } from '../prisma/project-repository'
 export class InMemoryProjectRepository implements ProjectRepository {
   public dbProject: Project[] = []
 
-  constructor() {
-    const project: Prisma.ProjectCreateWithoutUserInput = {
-      title: 'React',
-      description: 'Novo',
-      tags: 'nov, nn',
-      link: 'https:',
-    }
-
-    const userId = '1'
-
-    this.create(project, userId)
-  }
-
-  async findById(id: string) {
-    const project = this.dbProject.find((project) => project.id === id)
-
-    return !project ? null : project
-  }
+  constructor() {}
 
   async create(
-    data: Prisma.ProjectCreateWithoutUserInput,
-    userId: string,
+    data: Prisma.ProjectCreateWithoutUserInput & { user_id: string },
   ): Promise<Project> {
     const project: Project = {
       id: data.id ?? randomUUID(),
@@ -35,7 +17,7 @@ export class InMemoryProjectRepository implements ProjectRepository {
       description: data.description,
       tags: data.tags,
       link: data.link,
-      user_id: userId,
+      user_id: data.user_id,
       created_at: new Date(),
       updated_at: new Date(),
     }
