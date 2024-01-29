@@ -10,7 +10,7 @@ import { logMiddleware } from './controller/middlewares/logMiddleware'
 export const app = fastify()
 
 app.register(cors, {
-  origin: ['http://127.0.0.1:5173', 'http://localhost:5173'],
+  origin: [env.FRONTEND_URL],
 })
 app.register(userRoutes)
 app.addHook('preHandler', logMiddleware)
@@ -20,7 +20,6 @@ app.register(authRoutes)
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 })
-
 
 app.setErrorHandler((error, _, response) => {
   if (env.NODE_ENV !== 'production') {
