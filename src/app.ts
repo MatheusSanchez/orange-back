@@ -16,8 +16,10 @@ app.register(cors, {
 })
 app.register(userRoutes)
 
-app.register(authRoutes)
 app.register(projectRoutes)
+app.addHook('preHandler', logMiddleware)
+
+app.register(authRoutes)
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,

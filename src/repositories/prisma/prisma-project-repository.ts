@@ -20,4 +20,5 @@ export class PrismaProjectRepository implements ProjectRepository {
 
     return projects
   }
+
 }
