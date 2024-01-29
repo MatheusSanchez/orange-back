@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 
 import { Prisma, Project } from '@prisma/client'
-import { ProjectRepository } from '../prisma/project-repository'
+import { ProjectRepository } from '../project-repository'
 
 export class InMemoryProjectRepository implements ProjectRepository {
   public dbProject: Project[] = []
