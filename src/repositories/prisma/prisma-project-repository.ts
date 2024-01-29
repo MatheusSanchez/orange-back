@@ -3,8 +3,12 @@ import { ProjectRepository } from '../project-repository'
 import { prisma } from '../../lib/prisma'
 
 export class PrismaProjectRepository implements ProjectRepository {
-  create(_: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
-    throw new Error('Method not implemented.')
+  async create(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
+    const project = await prisma.project.create({
+      data,
+    })
+
+    return project
   }
 
   async fetchProjectsByUserId(userId: string): Promise<Project[]> {

@@ -10,7 +10,7 @@ import { randomUUID } from 'crypto'
 let projectRepository: ProjectRepository
 let userRepository: UserRepository
 
-describe.only('Get Projets By UserId E2E', () => {
+describe('Get Projets By UserId E2E', () => {
   beforeAll(async () => {
     projectRepository = new PrismaProjectRepository()
     userRepository = new PrismaUsersRepository()
