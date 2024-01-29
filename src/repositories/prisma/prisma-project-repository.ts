@@ -21,4 +21,7 @@ export class PrismaProjectRepository implements ProjectRepository {
     return projects
   }
 
+  async fetchProjectById(_projectId: string): Promise<Project | null> {
+    throw new Error('Method not implemented.')
+  }
 }
