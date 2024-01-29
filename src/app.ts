@@ -6,6 +6,7 @@ import { authRoutes } from './controller/session/routes'
 import fastifyJwt from '@fastify/jwt'
 import cors from '@fastify/cors'
 import { logMiddleware } from './controller/middlewares/logMiddleware'
+import { projectRoutes } from './controller/project/routes'
 
 export const app = fastify()
 
@@ -13,6 +14,7 @@ app.register(cors, {
   origin: [env.FRONTEND_URL],
 })
 app.register(userRoutes)
+app.register(projectRoutes)
 app.addHook('preHandler', logMiddleware)
 
 app.register(authRoutes)
