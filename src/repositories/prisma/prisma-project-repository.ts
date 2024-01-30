@@ -21,4 +21,13 @@ export class PrismaProjectRepository implements ProjectRepository {
     return projects
   }
 
+  async fetchProjectById(projectId: string): Promise<Project | null> {
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    })
+
+    return project
+  }
 }

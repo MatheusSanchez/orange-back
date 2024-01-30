@@ -32,4 +32,12 @@ export class InMemoryProjectRepository implements ProjectRepository {
 
     return projects
   }
+
+  async fetchProjectById(projectId: string): Promise<Project | null> {
+    const project = this.dbProject.find((project) => project.id === projectId)
+    if (!project) {
+      return null
+    }
+    return project
+  }
 }

@@ -3,6 +3,7 @@ import request from 'supertest'
 import { app } from '../../app'
 import { ProjectRepository } from '../../repositories/project-repository'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
+
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { UserRepository } from '../../repositories/user-repository'
 import { randomUUID } from 'crypto'
@@ -10,7 +11,7 @@ import { randomUUID } from 'crypto'
 let projectRepository: ProjectRepository
 let userRepository: UserRepository
 
-describe('Get Projets By UserId E2E', () => {
+describe('Get Projets By ID E2E', () => {
   beforeAll(async () => {
     projectRepository = new PrismaProjectRepository()
     userRepository = new PrismaUsersRepository()
@@ -22,7 +23,7 @@ describe('Get Projets By UserId E2E', () => {
     await app.close()
   })
 
-  it('should be able to get all projects from an user', async () => {
+  it('should be able to get a project by ID', async () => {
     const description = 'ReactProject'
     const link = 'www.google.com.br'
     const tags = 'React'
@@ -35,8 +36,7 @@ describe('Get Projets By UserId E2E', () => {
       password_hash: 'password',
     })
 
-    await projectRepository.create({
-      // First Project
+    const project = await projectRepository.create({
       description,
       link,
       tags,
@@ -44,40 +44,30 @@ describe('Get Projets By UserId E2E', () => {
       user_id: newUser.id,
     })
 
-    await projectRepository.create({
-      // Second Project
-      description,
-      link,
-      tags,
-      title,
-      user_id: newUser.id,
-    })
-
-    const getProjectsByUserIdResponse = await request(app.server).get(
-      `/projects/${newUser.id}`,
+    const getProjectByIdResponse = await request(app.server).get(
+      `/project/${project.id}`,
     )
 
-    expect(getProjectsByUserIdResponse.statusCode).toEqual(200)
-    expect(getProjectsByUserIdResponse.body.projects).toHaveLength(2)
-    expect(getProjectsByUserIdResponse.body.projects[0]).toEqual(
+    expect(getProjectByIdResponse.statusCode).toEqual(200)
+    expect(getProjectByIdResponse.body.project).toEqual(
       expect.objectContaining({ title }),
     )
 
-    expect(getProjectsByUserIdResponse.body.projects[1]).toEqual(
+    expect(getProjectByIdResponse.body.project).toEqual(
       expect.objectContaining({ tags }),
     )
   })
 
-  it('should not be able to project that user does not exist', async () => {
-    const getProjectsByUserIdResponse = await request(app.server).get(
-      `/projects/${randomUUID()}`,
+  it('should not be able to get a project that does not exist', async () => {
+    const getProjectByIdResponse = await request(app.server).get(
+      `/project/${randomUUID()}`,
     )
 
-    expect(getProjectsByUserIdResponse.statusCode).toEqual(404)
+    expect(getProjectByIdResponse.statusCode).toEqual(404)
 
-    expect(getProjectsByUserIdResponse.body).toEqual(
+    expect(getProjectByIdResponse.body).toEqual(
       expect.objectContaining({
-        error: 'User was not Found !',
+        error: 'Project was not Found !',
       }),
     )
   })

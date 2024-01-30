@@ -32,20 +32,20 @@ export async function createProject(
     userRepository,
   )
   try {
-    await createProjectUseCase.execute({
+    const project = await createProjectUseCase.execute({
       userId,
       title,
       tags,
       link,
       description,
     })
+
+    return response.status(201).send({ project })
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
-      return response.status(404).send({ message: error.message })
+      return response.status(404).send({ message: 'User was not Found !' })
     }
 
     throw error
   }
-
-  return response.status(201).send()
 }
