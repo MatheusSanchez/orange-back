@@ -10,9 +10,11 @@ datasource db {
 model User {
   id            String   @id @default(uuid())
   name          String
-  surname       String
+  surname       String?
   email         String   @unique
   password_hash String
+  avatar_url    String?
+  is_google     Boolean @default(false)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
