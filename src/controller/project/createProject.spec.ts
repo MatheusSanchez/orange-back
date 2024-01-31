@@ -24,7 +24,7 @@ describe('createProject E2E', () => {
   it('should be able to create a project', async () => {
     const createProjectBody = {
       title: 'Squad40 Project',
-      tags: 'Squad40',
+      tags: ['react', 'node'],
       link: 'https://Squad40.com',
       description: 'Squad40 description',
     }
@@ -42,12 +42,13 @@ describe('createProject E2E', () => {
 
     expect(createProjectResponse.statusCode).toEqual(201)
     expect(createProjectResponse.body.project.title).toEqual('Squad40 Project')
+    expect(createProjectResponse.body.project.tags).toEqual(['react', 'node'])
   })
 
   it('should not be able to create a project without user', async () => {
     const createProjectBody = {
       title: 'Squad40 Project',
-      tags: 'Squad40',
+      tags: ['react', 'node'],
       link: 'https://Squad40.com',
       description: 'Squad40 description',
     }
