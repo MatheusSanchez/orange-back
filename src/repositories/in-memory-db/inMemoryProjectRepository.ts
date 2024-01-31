@@ -40,4 +40,12 @@ export class InMemoryProjectRepository implements ProjectRepository {
     }
     return project
   }
+
+  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
+    const projects = this.dbProject.filter((project) =>
+      project.tags.some((tag) => tags.includes(tag)),
+    )
+
+    return projects
+  }
 }
