@@ -6,7 +6,6 @@ import { PrismaProjectRepository } from '../../repositories/prisma/prisma-projec
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { ProjectRepository } from '../../repositories/project-repository'
 import { UserRepository } from '../../repositories/user-repository'
-import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
 
 let projectRepository: ProjectRepository
 let userRepository: UserRepository
@@ -42,10 +41,10 @@ describe('createProject E2E', () => {
       .send(createProjectBody)
 
     expect(createProjectResponse.statusCode).toEqual(201)
-    expect(createProjectResponse.body.project).toBeDefined()
+    expect(createProjectResponse.body.project.title).toEqual('Squad40 Project')
   })
 
-  it('should handle ResourceNotFoundError', async () => {
+  it('should not be able to create a project without user', async () => {
     const createProjectBody = {
       title: 'Squad40 Project',
       tags: 'Squad40',
@@ -55,23 +54,11 @@ describe('createProject E2E', () => {
 
     const userId = randomUUID()
 
-    try {
-      const response = await request(app.server)
-        .post(`/user/${userId}/project`)
-        .send(createProjectBody)
+    const response = await request(app.server)
+      .post(`/user/${userId}/project`)
+      .send(createProjectBody)
 
-      if (response.status === 201) {
-        throw new Error(
-          'Expected the request to fail with ResourceNotFoundError',
-        )
-      }
-    } catch (error) {
-      if (!(error instanceof ResourceNotFoundError)) {
-        throw error
-      }
-
-      expect(error.message).toContain('ResourceNotFoundError')
-      expect(error.message).toContain('User was not Found !')
-    }
+    expect(response.body.message).toContain('User was not Found !')
+    expect(response.status).toEqual(404)
   })
 })
