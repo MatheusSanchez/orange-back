@@ -25,6 +25,16 @@ export class InMemoryProjectRepository implements ProjectRepository {
     return project
   }
 
+  async edit(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
+    const indexToUpdate = this.dbProject.findIndex(
+      (project) => project.id === data.id,
+    )
+
+    this.dbProject[indexToUpdate] = data as Project
+
+    return this.dbProject[indexToUpdate]
+  }
+
   async fetchProjectsByUserId(userId: string): Promise<Project[]> {
     const projects = this.dbProject.filter(
       (project) => project.user_id === userId,
