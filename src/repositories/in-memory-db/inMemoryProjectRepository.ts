@@ -40,4 +40,14 @@ export class InMemoryProjectRepository implements ProjectRepository {
     }
     return project
   }
+
+  async fetchProjectByTags(projectTags: string): Promise<Project[]> {
+    const lowercasedTags = projectTags.toLowerCase();
+  
+    const projects = this.dbProject.filter(
+      (project) => project.tags.toLowerCase() === lowercasedTags
+    );
+  
+    return projects;
+  }
 }

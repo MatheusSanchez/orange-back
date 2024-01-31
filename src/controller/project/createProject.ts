@@ -25,6 +25,8 @@ export async function createProject(
   )
   const { userId } = createProjectParamsSchema.parse(request.params)
 
+  const lowercaseTags = tags.toLowerCase();
+
   const userRepository = new PrismaUsersRepository()
   const projectRepository = new PrismaProjectRepository()
   const createProjectUseCase = new CreateProjectUseCase(
@@ -35,7 +37,7 @@ export async function createProject(
     const project = await createProjectUseCase.execute({
       userId,
       title,
-      tags,
+      tags: lowercaseTags,
       link,
       description,
     })

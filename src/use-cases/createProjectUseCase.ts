@@ -36,10 +36,12 @@ export class CreateProjectUseCase {
       throw new ResourceNotFoundError()
     }
 
+    const lowercaseTags = tags.toLowerCase();
+
     const project = await this.projectRepository.create({
       title,
       description,
-      tags,
+      tags: lowercaseTags,
       link,
       user_id: userId,
     })
