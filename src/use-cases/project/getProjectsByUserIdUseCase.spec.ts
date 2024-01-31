@@ -1,11 +1,11 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
-import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
+import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
+import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { GetProjectsByUserIdUseCase } from './getProjectsByUserIdUseCase'
-import { ProjectRepository } from '../repositories/project-repository'
-import { UserRepository } from '../repositories/user-repository'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { UserRepository } from '../../repositories/user-repository'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 let projectRepository: ProjectRepository
 let userRepository: UserRepository

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { CreateProjectUseCase } from '../../use-cases/createProjectUseCase'
+import { CreateProjectUseCase } from '../../use-cases/project/createProjectUseCase'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'

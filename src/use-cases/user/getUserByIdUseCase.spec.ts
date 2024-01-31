@@ -1,21 +1,21 @@
-  import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
+import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { describe, expect, beforeEach, it } from 'vitest'
 import { hash } from 'bcryptjs'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
-import { GetUserByEmailUseCase } from './getUserByEmailUseCase'
+import { GetUserByIdUseCase } from './getUserByIdUseCase'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 let userRepository: InMemoryUserRepository
 
-let getUserByEmailUseCase: GetUserByEmailUseCase
+let getUserByIdUseCase: GetUserByIdUseCase
 
 
-describe('Get User By Email Use Case', () => {
+describe('Get User By Id Use Case', () => {
   beforeEach(() => {
     userRepository = new InMemoryUserRepository()
-    getUserByEmailUseCase = new GetUserByEmailUseCase(userRepository)
+    getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
   })
 
-  it('should be able to get user by email', async () => {
+  it('should be able to get user by Id', async () => {
     const email = 'johndoe@email.com'
     const password = '12345'
     const name = 'John'
@@ -28,7 +28,7 @@ describe('Get User By Email Use Case', () => {
       password_hash: await hash(password, 6),
     })
 
-    const { user } = await getUserByEmailUseCase.execute({ email: newUser.email })
+    const { user } = await getUserByIdUseCase.execute({ id: newUser.id })
 
     expect(user.id).toEqual(newUser.id)
     expect(user.name).toEqual(name)
@@ -39,8 +39,8 @@ describe('Get User By Email Use Case', () => {
 
   it('should not be able to get user that does not exists', async () => {
     await expect(() =>
-      getUserByEmailUseCase.execute({
-        email: 'non-existing-email',
+      getUserByIdUseCase.execute({
+        id: 'non-existing-id',
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })

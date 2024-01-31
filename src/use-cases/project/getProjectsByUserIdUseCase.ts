@@ -1,9 +1,9 @@
 import { Project } from '@prisma/client'
 
-import { ProjectRepository } from '../repositories/project-repository'
-import { UserRepository } from '../repositories/user-repository'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { UserRepository } from '../../repositories/user-repository'
 
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 interface FetchProjectsByUserIdUseCaseRequest {
   userId: string
