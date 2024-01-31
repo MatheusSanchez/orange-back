@@ -32,6 +32,12 @@ export class PrismaProjectRepository implements ProjectRepository {
   }
 
   async fetchProjectByTags(tags: string[]): Promise<Project[]> {
-    throw new Error('Method not implemented.')
+    const project = await prisma.project.findMany({
+      where: {
+        tags: { hasEvery: tags },
+      },
+    })
+
+    return project
   }
 }
