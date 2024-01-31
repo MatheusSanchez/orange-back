@@ -33,7 +33,7 @@ describe('Get Project By User Id Use Case', () => {
     await projectRepository.create({
       title: 'React Typescript 1',
       description: 'Best Project',
-      tags: 'React',
+      tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
       user_id: newUser.id,
     })
@@ -41,7 +41,7 @@ describe('Get Project By User Id Use Case', () => {
     await projectRepository.create({
       title: 'React Typescript 2',
       description: 'Best Project 2',
-      tags: 'React',
+      tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
       user_id: newUser.id,
     })

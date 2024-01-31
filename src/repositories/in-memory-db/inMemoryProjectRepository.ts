@@ -13,7 +13,7 @@ export class InMemoryProjectRepository implements ProjectRepository {
       id: data.id ?? randomUUID(),
       title: data.title,
       description: data.description,
-      tags: data.tags,
+      tags: data.tags as string[],
       link: data.link,
       user_id: data.user_id,
       created_at: new Date(),

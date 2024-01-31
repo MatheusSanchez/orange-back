@@ -11,7 +11,7 @@ export async function createProject(
 ) {
   const createProjectBodySchema = z.object({
     title: z.string(),
-    tags: z.string(),
+    tags: z.array(z.string()),
     link: z.string(),
     description: z.string(),
   })
