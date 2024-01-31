@@ -30,4 +30,8 @@ export class PrismaProjectRepository implements ProjectRepository {
 
     return project
   }
+
+  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
+    throw new Error('Method not implemented.')
+  }
 }
