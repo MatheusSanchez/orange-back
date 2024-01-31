@@ -32,7 +32,7 @@ export async function createProject(
     userRepository,
   )
   try {
-    const project = await createProjectUseCase.execute({
+    const { project } = await createProjectUseCase.execute({
       userId,
       title,
       tags,
