@@ -30,16 +30,4 @@ export class PrismaProjectRepository implements ProjectRepository {
 
     return project
   }
-
-  async fetchProjectByTags(projectTags: string): Promise<Project[]> {
-    const lowercasedTags = projectTags.toLowerCase()
-  
-    const projects = await prisma.project.findMany({
-      where: {
-        tags: lowercasedTags,
-      },
-    })
-  
-    return projects;
-  }
 }

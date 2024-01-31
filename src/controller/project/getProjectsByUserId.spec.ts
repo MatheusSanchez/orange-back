@@ -25,7 +25,7 @@ describe('Get Projets By UserId E2E', () => {
   it('should be able to get all projects from an user', async () => {
     const description = 'ReactProject'
     const link = 'www.google.com.br'
-    const tags = 'React'
+    const tags = ['react', 'node']
     const title = 'ReactProject'
 
     const newUser = await userRepository.create({

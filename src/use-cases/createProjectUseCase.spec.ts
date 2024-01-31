@@ -31,13 +31,14 @@ describe('Create Project Use Case', () => {
     const { project } = await createProjectUseCase.execute({
       title: 'React Typescript',
       description: 'Melhor Projeto',
-      tags: 'React, Node',
+      tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
       userId: newUser.id,
     })
 
     expect(project.id).toEqual(expect.any(String))
     expect(project.title).toEqual('React Typescript')
+    expect(project.tags).toEqual(['react', 'node'])
   })
 
   it('should not be able to create a project if the user was not found.', async () => {
@@ -45,7 +46,7 @@ describe('Create Project Use Case', () => {
       createProjectUseCase.execute({
         title: 'Project with nonexistent user',
         description: 'Project without a valid user',
-        tags: 'Invalid, Project',
+        tags: ['react', 'node'],
         link: 'https://github.com/example/project-with-nonexistent-user',
         userId: 'non-existent-UserId',
       }),

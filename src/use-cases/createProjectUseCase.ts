@@ -8,7 +8,7 @@ import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
 interface CreateProjectUseCaseRequest {
   title: string
   description: string
-  tags: string
+  tags: string[]
   link: string
   userId: string
 }
@@ -36,7 +36,7 @@ export class CreateProjectUseCase {
       throw new ResourceNotFoundError()
     }
 
-    const lowercaseTags = tags.toLowerCase();
+    const lowercaseTags = tags.map((tag) => tag.toLowerCase())
 
     const project = await this.projectRepository.create({
       title,
