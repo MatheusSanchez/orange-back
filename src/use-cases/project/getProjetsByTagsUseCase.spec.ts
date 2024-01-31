@@ -1,8 +1,8 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
+import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
 
-import { ProjectRepository } from '../repositories/project-repository'
+import { ProjectRepository } from '../../repositories/project-repository'
 import { GetProjectsByTagsUseCase } from './getProjetsByTagsUseCase'
 
 let projectRepository: ProjectRepository

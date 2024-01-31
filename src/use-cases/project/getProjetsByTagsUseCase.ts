@@ -1,8 +1,8 @@
 import { Project } from '@prisma/client'
 
-import { ProjectRepository } from '../repositories/project-repository'
+import { ProjectRepository } from '../../repositories/project-repository'
 
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 interface GetProjectsByTagsRequest {
   projectTags: string[]

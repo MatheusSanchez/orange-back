@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
-import { GetProjectsByTagsUseCase } from '../../use-cases/getProjetsByTagsUseCase'
+import { GetProjectsByTagsUseCase } from '../../use-cases/project/getProjetsByTagsUseCase'
 
 export async function getProjectsByTags(
   request: FastifyRequest,

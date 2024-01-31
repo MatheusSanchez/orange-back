@@ -1,10 +1,10 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { CreateProjectUseCase } from './createProjectUseCase'
+import { CreateProjectUseCase } from '../project/createProjectUseCase'
 
-import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
-import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
+import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 let projectRepository: InMemoryProjectRepository
 let userRepository: InMemoryUserRepository

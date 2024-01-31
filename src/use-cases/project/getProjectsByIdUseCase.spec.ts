@@ -1,8 +1,8 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
-import { ProjectRepository } from '../repositories/project-repository'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 import { GetProjectsByIdUseCase } from './getProjectsByIdUseCase'
 
 let projectRepository: ProjectRepository
