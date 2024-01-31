@@ -40,4 +40,13 @@ export class PrismaProjectRepository implements ProjectRepository {
 
     return project
   }
+
+  async edit(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
+    const project = await prisma.project.update({
+      where: { id: data.id },
+      data,
+    })
+
+    return project
+  }
 }
