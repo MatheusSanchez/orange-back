@@ -4,3 +4,4 @@ coverage
 
 prisma/vitest-environment-prisma/pnpm-lock.yaml
 build
+src/tmp/uploads/**

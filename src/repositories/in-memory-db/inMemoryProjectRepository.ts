@@ -40,4 +40,8 @@ export class InMemoryProjectRepository implements ProjectRepository {
     }
     return project
   }
+
+  async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
+    throw new Error('Method not implemented.')
+  }
 }

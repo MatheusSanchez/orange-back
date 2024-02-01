@@ -30,4 +30,17 @@ export class PrismaProjectRepository implements ProjectRepository {
 
     return project
   }
+
+  async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
+    const project = await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        photo_url: photoUrl,
+      },
+    })
+
+    return project
+  }
 }
