@@ -31,4 +31,6 @@ model Project {
 
   user          User   @relation(fields: [user_id], references: [id])
   user_id       String
+
+  photo_url     String?
 }

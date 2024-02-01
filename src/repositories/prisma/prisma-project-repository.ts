@@ -31,15 +31,31 @@ export class PrismaProjectRepository implements ProjectRepository {
     return project
   }
 
-  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
-    const project = await prisma.project.findMany({
+
+  async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
+    const project = await prisma.project.update({
       where: {
-        tags: { hasEvery: tags },
+        id: projectId,
+      },
+      data: {
+        photo_url: photoUrl,
       },
     })
 
     return project
   }
+
+  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
+    const project = await prisma.project.findMany({
+      where: {
+        tags: { hasEvery: tags },
+
+      },
+    })
+
+    return project
+  }
+
 
   async edit(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
     const project = await prisma.project.update({

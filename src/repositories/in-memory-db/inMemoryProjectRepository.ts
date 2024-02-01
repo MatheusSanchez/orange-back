@@ -51,6 +51,11 @@ export class InMemoryProjectRepository implements ProjectRepository {
     return project
   }
 
+
+  async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
+    throw new Error('Method not implemented.')
+  }
+  
   async fetchProjectByTags(tags: string[]): Promise<Project[]> {
     const projects = this.dbProject.filter((project) =>
       project.tags.some((tag) => tags.includes(tag)),
