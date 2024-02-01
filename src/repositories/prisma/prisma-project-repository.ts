@@ -31,6 +31,7 @@ export class PrismaProjectRepository implements ProjectRepository {
     return project
   }
 
+
   async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
     const project = await prisma.project.update({
       where: {
@@ -39,6 +40,27 @@ export class PrismaProjectRepository implements ProjectRepository {
       data: {
         photo_url: photoUrl,
       },
+    })
+
+    return project
+  }
+
+  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
+    const project = await prisma.project.findMany({
+      where: {
+        tags: { hasEvery: tags },
+
+      },
+    })
+
+    return project
+  }
+
+
+  async edit(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
+    const project = await prisma.project.update({
+      where: { id: data.id },
+      data,
     })
 
     return project

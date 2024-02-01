@@ -1,14 +1,14 @@
 import { Project } from '@prisma/client'
 
-import { ProjectRepository } from '../repositories/project-repository'
-import { UserRepository } from '../repositories/user-repository'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { UserRepository } from '../../repositories/user-repository'
 
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 interface CreateProjectUseCaseRequest {
   title: string
   description: string
-  tags: string
+  tags: string[]
   link: string
   userId: string
 }
@@ -36,10 +36,12 @@ export class CreateProjectUseCase {
       throw new ResourceNotFoundError()
     }
 
+    const lowercaseTags = tags.map((tag) => tag.toLowerCase())
+
     const project = await this.projectRepository.create({
       title,
       description,
-      tags,
+      tags: lowercaseTags,
       link,
       user_id: userId,
     })

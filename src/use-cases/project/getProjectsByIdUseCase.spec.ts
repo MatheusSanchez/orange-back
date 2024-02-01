@@ -1,8 +1,8 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
-import { ProjectRepository } from '../repositories/project-repository'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 import { GetProjectsByIdUseCase } from './getProjectsByIdUseCase'
 
 let projectRepository: ProjectRepository
@@ -18,7 +18,7 @@ describe('Get Project By Id Use Case', () => {
     const newProject = await projectRepository.create({
       title: 'React Typescript 1',
       description: 'Best Project',
-      tags: 'React',
+      tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
       user_id: 'user_id',
     })
@@ -31,6 +31,7 @@ describe('Get Project By Id Use Case', () => {
       expect.objectContaining({
         title: 'React Typescript 1',
         id: newProject.id,
+        tags: ['react', 'node'],
       }),
     )
   })

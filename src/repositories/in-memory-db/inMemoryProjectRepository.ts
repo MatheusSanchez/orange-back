@@ -13,7 +13,7 @@ export class InMemoryProjectRepository implements ProjectRepository {
       id: data.id ?? randomUUID(),
       title: data.title,
       description: data.description,
-      tags: data.tags,
+      tags: data.tags as string[],
       link: data.link,
       user_id: data.user_id,
       created_at: new Date(),
@@ -23,6 +23,16 @@ export class InMemoryProjectRepository implements ProjectRepository {
     this.dbProject.push(project)
 
     return project
+  }
+
+  async edit(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
+    const indexToUpdate = this.dbProject.findIndex(
+      (project) => project.id === data.id,
+    )
+
+    this.dbProject[indexToUpdate] = data as Project
+
+    return this.dbProject[indexToUpdate]
   }
 
   async fetchProjectsByUserId(userId: string): Promise<Project[]> {
@@ -41,7 +51,16 @@ export class InMemoryProjectRepository implements ProjectRepository {
     return project
   }
 
+
   async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
     throw new Error('Method not implemented.')
+  }
+  
+  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
+    const projects = this.dbProject.filter((project) =>
+      project.tags.some((tag) => tags.includes(tag)),
+    )
+
+    return projects
   }
 }

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { CreateProjectUseCase } from '../../use-cases/createProjectUseCase'
+import { CreateProjectUseCase } from '../../use-cases/project/createProjectUseCase'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
@@ -11,7 +11,7 @@ export async function createProject(
 ) {
   const createProjectBodySchema = z.object({
     title: z.string(),
-    tags: z.string(),
+    tags: z.array(z.string()),
     link: z.string(),
     description: z.string(),
   })
@@ -32,7 +32,7 @@ export async function createProject(
     userRepository,
   )
   try {
-    const project = await createProjectUseCase.execute({
+    const { project } = await createProjectUseCase.execute({
       userId,
       title,
       tags,

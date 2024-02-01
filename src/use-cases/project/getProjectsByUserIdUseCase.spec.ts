@@ -1,11 +1,11 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
-import { InMemoryProjectRepository } from '../repositories/in-memory-db/inMemoryProjectRepository'
-import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
+import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
+import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { GetProjectsByUserIdUseCase } from './getProjectsByUserIdUseCase'
-import { ProjectRepository } from '../repositories/project-repository'
-import { UserRepository } from '../repositories/user-repository'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { UserRepository } from '../../repositories/user-repository'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 
 let projectRepository: ProjectRepository
 let userRepository: UserRepository
@@ -33,7 +33,7 @@ describe('Get Project By User Id Use Case', () => {
     await projectRepository.create({
       title: 'React Typescript 1',
       description: 'Best Project',
-      tags: 'React',
+      tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
       user_id: newUser.id,
     })
@@ -41,7 +41,7 @@ describe('Get Project By User Id Use Case', () => {
     await projectRepository.create({
       title: 'React Typescript 2',
       description: 'Best Project 2',
-      tags: 'React',
+      tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
       user_id: newUser.id,
     })

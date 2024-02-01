@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
 import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
-import { GetProjectsByIdUseCase } from '../../use-cases/getProjectsByIdUseCase'
+import { GetProjectsByIdUseCase } from '../../use-cases/project/getProjectsByIdUseCase'
 
 export async function getProjectsById(
   request: FastifyRequest,

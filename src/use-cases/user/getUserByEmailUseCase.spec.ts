@@ -1,21 +1,20 @@
-import { InMemoryUserRepository } from '../repositories/in-memory-db/inMemoryUserRepository'
+import { InMemoryUserRepository } from '../../repositories/in-memory-db/inMemoryUserRepository'
 import { describe, expect, beforeEach, it } from 'vitest'
 import { hash } from 'bcryptjs'
-import { GetUserByIdUseCase } from './getUserByIdUseCase'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
+import { GetUserByEmailUseCase } from '../user/getUserByEmailUseCase'
 
 let userRepository: InMemoryUserRepository
 
-let getUserByIdUseCase: GetUserByIdUseCase
+let getUserByEmailUseCase: GetUserByEmailUseCase
 
-
-describe('Get User By Id Use Case', () => {
+describe('Get User By Email Use Case', () => {
   beforeEach(() => {
     userRepository = new InMemoryUserRepository()
-    getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
+    getUserByEmailUseCase = new GetUserByEmailUseCase(userRepository)
   })
 
-  it('should be able to get user by Id', async () => {
+  it('should be able to get user by email', async () => {
     const email = 'johndoe@email.com'
     const password = '12345'
     const name = 'John'
@@ -24,23 +23,24 @@ describe('Get User By Id Use Case', () => {
     const newUser = await userRepository.create({
       email,
       name,
-      surname, 
+      surname,
       password_hash: await hash(password, 6),
     })
 
-    const { user } = await getUserByIdUseCase.execute({ id: newUser.id })
+    const { user } = await getUserByEmailUseCase.execute({
+      email: newUser.email,
+    })
 
     expect(user.id).toEqual(newUser.id)
     expect(user.name).toEqual(name)
     expect(user.surname).toEqual(surname)
     expect(user.email).toEqual(email)
-
   })
 
   it('should not be able to get user that does not exists', async () => {
     await expect(() =>
-      getUserByIdUseCase.execute({
-        id: 'non-existing-id',
+      getUserByEmailUseCase.execute({
+        email: 'non-existing-email',
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
