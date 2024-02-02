@@ -31,6 +31,7 @@ describe('Get User By Id E2E', () => {
     expect(getUserByIdResponse.body.user).toEqual(
       expect.objectContaining({
         id,
+        country: 'brasil',
       }),
     )
   })
