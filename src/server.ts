@@ -1,8 +1,6 @@
 import { app } from './app'
 import { env } from './env'
 
-console.log(process.env)
-
 app
   .listen({
     port: env.PORT,

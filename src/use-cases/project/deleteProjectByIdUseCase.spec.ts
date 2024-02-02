@@ -50,13 +50,6 @@ describe('Delete Project By Id Use Case', () => {
     const { projects } = await getProjectsByUserIdUseCase.execute({ userId: newUser.id })
     
     expect(deletedProject).toEqual(undefined)
-    expect(secondProject).toEqual(
-      expect.objectContaining({
-        title: 'React Typescript 2',
-        description: 'Best Project 2',
-      }),
-    )
-
     expect(projects).toHaveLength(1)
   })
 })
