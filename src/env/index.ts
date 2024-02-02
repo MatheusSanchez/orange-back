@@ -12,6 +12,7 @@ const envSchema = z.object({
   REGION: z.string().optional(),
   ACCESS_KEY_ID: z.string().optional(),
   BUCKET_NAME: z.string().optional(),
+  SECRET_ACCESS_KEY: z.string().optional(),
 })
 
 const _env = envSchema.safeParse(process.env)
@@ -27,7 +28,8 @@ if (_env.data.STORAGE_TYPE === 's3') {
     _env.data.AWS_S3_URL === undefined ||
     _env.data.REGION === undefined ||
     _env.data.ACCESS_KEY_ID === undefined ||
-    _env.data.BUCKET_NAME === undefined
+    _env.data.BUCKET_NAME === undefined ||
+    _env.data.SECRET_ACCESS_KEY === undefined
   ) {
     console.error('❌❌❌ Invalid environment variables')
 
