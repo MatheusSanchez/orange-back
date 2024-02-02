@@ -47,6 +47,7 @@ export class AddImageToProjectUseCase {
         {
           region: env.REGION,
           accessKeyId: env.ACCESS_KEY_ID,
+          secretAccessKey: env.SECRET_ACCESS_KEY,
         },
       ])
 
