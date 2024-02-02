@@ -56,6 +56,16 @@ export class PrismaProjectRepository implements ProjectRepository {
     return project
   }
 
+  async deleteProjectByID(projectId: string):Promise<void> {
+    await prisma.project.delete({
+      where: {
+        id: projectId
+      }
+    })
+
+    return
+  }
+
 
   async edit(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
     const project = await prisma.project.update({
