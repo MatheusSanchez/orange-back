@@ -55,6 +55,16 @@ export class InMemoryProjectRepository implements ProjectRepository {
   async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
     throw new Error('Method not implemented.')
   }
+
+  async deleteProjectByID(projectId: string): Promise<void> {
+    const index = this.dbProject.findIndex((project) => project.id === projectId);
+
+    if (index !== -1) {
+      this.dbProject.splice(index, 1);
+    }
+    
+    return
+  }
   
   async fetchProjectByTags(tags: string[]): Promise<Project[]> {
     const projects = this.dbProject.filter((project) =>
