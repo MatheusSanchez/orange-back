@@ -1,15 +1,15 @@
 import { Project } from '@prisma/client'
 
-import { ProjectRepository } from '../repositories/project-repository'
-import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
+import { ProjectRepository } from '../../repositories/project-repository'
+import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 import { MultipartFile } from '@fastify/multipart'
 import { randomUUID } from 'node:crypto'
-import { env } from '../env'
+import { env } from '../../env'
 import path from 'node:path'
 import fs from 'node:fs'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { PutObjectCommand, S3Client, S3ClientConfig } from '@aws-sdk/client-s3'
 import pump from 'pump'
-import { AwsS3Error } from './errors/AwsS3Error'
+import { AwsS3Error } from '../errors/AwsS3Error'
 
 interface AddImageToProjectUseCaseRequest {
   projectId: string
@@ -43,13 +43,14 @@ export class AddImageToProjectUseCase {
       await pump(photo.file, writeSteam)
       photoUrl = `${uploadPath}/${newFileName}`
     } else {
-      const s3bucket = new S3Client([
-        {
-          region: env.REGION,
+      const s3bucket = new S3Client({
+        region: env.REGION,
+
+        credentials: {
           accessKeyId: env.ACCESS_KEY_ID,
           secretAccessKey: env.SECRET_ACCESS_KEY,
         },
-      ])
+      } as S3ClientConfig)
 
       const putObjectCommand = new PutObjectCommand({
         Bucket: env.BUCKET_NAME,
