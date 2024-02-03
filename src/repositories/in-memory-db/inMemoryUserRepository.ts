@@ -33,6 +33,7 @@ export class InMemoryUserRepository implements UserRepository {
     surname,
     email,
     password_hash,
+    country,
   }: Prisma.UserCreateInput) {
     const user: User = {
       id: id === undefined ? randomUUID() : id,
@@ -45,10 +46,10 @@ export class InMemoryUserRepository implements UserRepository {
       created_at: new Date(),
       updated_at: new Date(),
       avatar_url: null,
+      country: country || 'brasil',
     }
 
     this.db.push(user)
-
     return user
   }
 }

@@ -35,6 +35,7 @@ describe('Get User By Email Use Case', () => {
     expect(user.name).toEqual(name)
     expect(user.surname).toEqual(surname)
     expect(user.email).toEqual(email)
+    expect(user.country).toEqual('brasil')
   })
 
   it('should not be able to get user that does not exists', async () => {
