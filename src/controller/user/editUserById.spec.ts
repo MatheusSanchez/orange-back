@@ -4,13 +4,20 @@ import { app } from '../../app'
 import { randomUUID } from 'crypto'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { UserRepository } from '../../repositories/user-repository'
+import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
 
 let userRepository: UserRepository
+
+let userAuth: {
+  token: string
+  userId: string
+}
 
 describe('edit User E2E', () => {
   beforeAll(async () => {
     userRepository = new PrismaUsersRepository()
     await app.ready()
+    userAuth = await createAndAuthenticateUser(app)
   })
 
   afterAll(async () => {
@@ -18,25 +25,14 @@ describe('edit User E2E', () => {
   })
 
   it('should be able to edit a user', async () => {
-    const email = 'john_doe@email.com'
-    const name = 'John'
-    const surname = 'Doe'
-    const password_hash = 'password_hash'
-
-    const newUser = await userRepository.create({
-      email,
-      name,
-      surname,
-      password_hash,
-    })
-
     const editUserResponse = await request(app.server)
-      .put(`/user/${newUser.id}/edit`)
+      .put(`/user/${userAuth.userId}/edit`)
       .send({
         name: 'newName',
         surname: 'surname',
         country: 'country',
       })
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(editUserResponse.statusCode).toEqual(200)
     expect(editUserResponse.body.user).toEqual(
@@ -44,8 +40,7 @@ describe('edit User E2E', () => {
         name: 'newName',
         surname: 'surname',
         country: 'country',
-        id: newUser.id,
-        email,
+        id: userAuth.userId,
       }),
     )
   })
@@ -53,6 +48,7 @@ describe('edit User E2E', () => {
   it('should not be able to edit a user that does not exist', async () => {
     const editUserResponse = await request(app.server)
       .put(`/user/${randomUUID()}/edit`)
+      .set('Authorization', `Bearer ${userAuth.token}`)
       .send({
         name: 'newName',
         surname: 'surname',
