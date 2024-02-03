@@ -9,6 +9,7 @@ import fastifyStatic from '@fastify/static'
 import { getProjectsByTags } from './getProjectsByTags'
 import { editProject } from './editProjectById'
 import { deleteProjectById } from './deleteProjectById'
+import { verifyJWT } from '../middlewares/verifyJwt'
 
 export async function projectRoutes(app: FastifyInstance) {
   app.register(FastifyMultipart, {
@@ -24,7 +25,7 @@ export async function projectRoutes(app: FastifyInstance) {
   })
 
   app.post('/projects/tags', getProjectsByTags)
-  app.get('/projects/:userId', getProjectsByUserId)
+  app.get('/projects/:userId', { onRequest: verifyJWT }, getProjectsByUserId)
   app.get('/project/:projectId', getProjectsById)
 
   app.post('/project/:projectId/photo', addImageProject)

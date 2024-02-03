@@ -6,6 +6,7 @@ import { PrismaProjectRepository } from '../../repositories/prisma/prisma-projec
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { UserRepository } from '../../repositories/user-repository'
 import { randomUUID } from 'crypto'
+import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
 
 let projectRepository: ProjectRepository
 let userRepository: UserRepository
@@ -23,6 +24,8 @@ describe('Get Projets By UserId E2E', () => {
   })
 
   it('should be able to get all projects from an user', async () => {
+    const { token } = await createAndAuthenticateUser(app)
+
     const description = 'ReactProject'
     const link = 'www.google.com.br'
     const tags = ['react', 'node']
@@ -53,9 +56,9 @@ describe('Get Projets By UserId E2E', () => {
       user_id: newUser.id,
     })
 
-    const getProjectsByUserIdResponse = await request(app.server).get(
-      `/projects/${newUser.id}`,
-    )
+    const getProjectsByUserIdResponse = await request(app.server)
+      .get(`/projects/${newUser.id}`)
+      .set('Authorization', `Bearer ${token}`)
 
     expect(getProjectsByUserIdResponse.statusCode).toEqual(200)
     expect(getProjectsByUserIdResponse.body.projects).toHaveLength(2)
@@ -69,9 +72,10 @@ describe('Get Projets By UserId E2E', () => {
   })
 
   it('should not be able to project that user does not exist', async () => {
-    const getProjectsByUserIdResponse = await request(app.server).get(
-      `/projects/${randomUUID()}`,
-    )
+    const { token } = await createAndAuthenticateUser(app)
+    const getProjectsByUserIdResponse = await request(app.server)
+      .get(`/projects/${randomUUID()}`)
+      .set('Authorization', `Bearer ${token}`)
 
     expect(getProjectsByUserIdResponse.statusCode).toEqual(404)
 
