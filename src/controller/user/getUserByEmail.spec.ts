@@ -36,6 +36,7 @@ describe('Get User By email E2E', () => {
         name,
         surname,
         password_hash: expect.any(String),
+        country: 'brasil',
       }),
     )
 
