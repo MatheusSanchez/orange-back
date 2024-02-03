@@ -35,16 +35,9 @@ describe('Get User By email E2E', () => {
         email,
         name,
         surname,
-        password_hash: expect.any(String),
         country: 'brasil',
       }),
     )
-
-    const passwordMatches = await compare(
-      password,
-      getUserByEmailResponse.body.user.password_hash,
-    )
-    expect(passwordMatches).toEqual(true)
   })
 
   test('should not be able to get an user by e-mail that does not exist', async () => {

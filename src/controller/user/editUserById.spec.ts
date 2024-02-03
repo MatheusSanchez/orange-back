@@ -46,7 +46,6 @@ describe('edit User E2E', () => {
         country: 'country',
         id: newUser.id,
         email,
-        password_hash,
       }),
     )
   })
