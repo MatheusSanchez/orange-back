@@ -12,4 +12,5 @@ export interface UserRepository {
   findByEmail(email: string): Promise<User | null>
   findById(id: string): Promise<User | null>
   edit({ name, surname, country, userId }: editUserRequestPrisma): Promise<User>
+  addPhotoUrl(userId: string, photoUrl: string): Promise<User>
 }

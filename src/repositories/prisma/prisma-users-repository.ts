@@ -31,6 +31,7 @@ export class PrismaUsersRepository implements UserRepository {
     return user
   }
 
+
   async edit({
     name,
     surname,
@@ -40,6 +41,20 @@ export class PrismaUsersRepository implements UserRepository {
     const user = await prisma.user.update({
       where: { id: userId },
       data: { name, surname, country },
+    })
+
+    return user
+  }
+  
+
+  async addPhotoUrl(userId: string, photoUrl: string): Promise<User> {
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        avatar_url: photoUrl,
+      },
     })
 
     return user

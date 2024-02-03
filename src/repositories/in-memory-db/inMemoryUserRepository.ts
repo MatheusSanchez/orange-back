@@ -52,6 +52,7 @@ export class InMemoryUserRepository implements UserRepository {
     return user
   }
 
+
   async edit({
     name,
     surname,
@@ -68,5 +69,8 @@ export class InMemoryUserRepository implements UserRepository {
     }
 
     return this.db[indexToUpdate]
+  }
+  async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
+    throw new Error('Method not implemented.')
   }
 }
