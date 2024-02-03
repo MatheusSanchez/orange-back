@@ -1,0 +1,55 @@
+{
+  "schema": {
+    "tags": [
+      "User"
+    ],
+    "summary": "Register a new user",
+    "description": "Registers a new user with the provided information.",
+    "operationId": "registerUser",
+    "body": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      },
+      "required": [
+        "name",
+        "surname",
+        "email",
+        "password"
+      ]
+    },
+    "response": {
+      "201": {
+        "description": "User successfully registered",
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "No body returned for response"
+          }
+        }
+      },
+      "409": {
+        "description": "E-mail already exists.",
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "E-mail already exists."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema": {
+    "tags": [
+      "Project"
+    ],
+    "summary": "Get project by ID",
+    "description": "Retrieves project information based on the provided project ID.",
+    "operationId": "getProjectById",
+    "parameters": [
+      {
+        "name": "projectId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "The ID of the project to retrieve."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Project found and returned successfully.",
+        "content": {
+          "application/json": {
+            "example": {
+              "project": {
+                "id": "example_uuid",
+                "name": "Example Project"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Project not found.",
+        "content": {
+          "application/json": {
+            "example": {
+              "error": "Project not found."
+            }
+          }
+        }
+      }
+    }
+  }
+}

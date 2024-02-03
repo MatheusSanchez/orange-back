@@ -1,0 +1,70 @@
+{
+  "schema": {
+    "tags": [
+      "Project"
+    ],
+    "summary": "Create Project",
+    "description": "Create a project based on the user ID.",
+    "operationId": "createProject",
+    "body": {
+      "title": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "link": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "tags",
+        "link",
+        "description"
+      ],
+      "type": "object"
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "userId"
+      ],
+      "type": "object"
+    },
+    "response": {
+      "201": {
+        "description": "Project created successfully",
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "object"
+          }
+        }
+      },
+      "409": {
+        "description": "User was not Found !",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

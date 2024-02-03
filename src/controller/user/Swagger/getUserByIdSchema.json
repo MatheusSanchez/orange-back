@@ -1,0 +1,42 @@
+{
+  "schema": {
+    "tags": [
+      "User"
+    ],
+    "summary": "Get user by ID",
+    "description": "Retrieves user information based on the provided user ID.",
+    "operationId": "getUserById",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "The ID of the user to retrieve."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "User found and returned successfully.",
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "User found and returned successfully"
+          }
+        }
+      },
+      "404": {
+        "description": "User not found.",
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "User not found."
+          }
+        }
+      }
+    }
+  }
+}

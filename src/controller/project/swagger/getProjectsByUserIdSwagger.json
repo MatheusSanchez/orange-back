@@ -1,0 +1,51 @@
+{
+  "schema": {
+    "tags": [
+      "Project"
+    ],
+    "summary": "Get projects by user ID",
+    "operationId": "getProjectsByUserId",
+    "parameters": [
+      {
+        "name": "userId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "The ID of the user to retrieve projects for."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Projects found and returned successfully.",
+        "content": {
+          "application/json": {
+            "example": {
+              "projects": [
+                {
+                  "id": "example_uuid_1",
+                  "name": "Project 1"
+                },
+                {
+                  "id": "example_uuid_2",
+                  "name": "Project 2"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "User not Found !",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
