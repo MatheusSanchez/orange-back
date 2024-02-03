@@ -4,8 +4,6 @@ import { getProjectsByUserId } from './getProjectsByUserId'
 import { getProjectsById } from './getProjectById'
 import { addImageProject } from './addImageToProject'
 import FastifyMultipart from '@fastify/multipart'
-import path from 'path'
-import fastifyStatic from '@fastify/static'
 import { getProjectsByTags } from './getProjectsByTags'
 import { editProject } from './editProjectById'
 import { deleteProjectById } from './deleteProjectById'
@@ -17,11 +15,6 @@ export async function projectRoutes(app: FastifyInstance) {
       files: 1,
       fileSize: 1000000, // the max file size in bytes
     },
-  })
-
-  app.register(fastifyStatic, {
-    root: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-    prefix: '/project/photo',
   })
 
   app.post('/projects/tags', getProjectsByTags)
