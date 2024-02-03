@@ -68,13 +68,13 @@ describe('Get Projets By Tags E2E', () => {
     expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
       expect.objectContaining({
         title: 'Project 01',
-        user: { name: 'John', surname: 'Doe', avatar_url: null },
+        user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
       }),
     )
     expect(getProjectsByTagsResponse.body.projects[1]).toEqual(
       expect.objectContaining({
         title: 'Project 02',
-        user: { name: 'John', surname: 'Doe', avatar_url: null },
+        user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
       }),
     )
   })
@@ -105,7 +105,7 @@ describe('Get Projets By Tags E2E', () => {
     expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
       expect.objectContaining({
         title: 'Project 03',
-        user: { name: 'John', surname: 'Doe', avatar_url: null },
+        user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
       }),
     )
   })

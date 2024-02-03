@@ -13,7 +13,7 @@ model User {
   surname       String?
   email         String   @unique
   password_hash String
-  avatar_url    String?
+  avatar_url    String @default("https://orangeapp-contents-prod.s3.amazonaws.com/avatar1.png")
   is_google     Boolean @default(false)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
