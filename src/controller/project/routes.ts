@@ -9,6 +9,9 @@ import fastifyStatic from '@fastify/static'
 import { getProjectsByTags } from './getProjectsByTags'
 import { editProject } from './editProjectById'
 import { deleteProjectById } from './deleteProjectById'
+import getProjectByUserIdSchema from './swagger/getProjectsByUserIdSwagger.json'
+import getProjectByIdSchema from './swagger/getProjectByIDSwagger.json'
+import createProjectSwagger from './swagger/createProjectSwagger.json'
 
 export async function projectRoutes(app: FastifyInstance) {
   app.register(FastifyMultipart, {
