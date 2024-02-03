@@ -52,7 +52,7 @@ describe('Get Projets By ID E2E', () => {
     expect(getProjectByIdResponse.body.project).toEqual(
       expect.objectContaining({
         title,
-        user: { name: 'John', surname: 'Doe', avatar_url: null },
+        user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
         tags,
       }),
     )
