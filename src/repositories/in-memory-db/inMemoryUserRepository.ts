@@ -52,4 +52,8 @@ export class InMemoryUserRepository implements UserRepository {
     this.db.push(user)
     return user
   }
+
+  async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
+    throw new Error('Method not implemented.')
+  }
 }

@@ -1,0 +1,36 @@
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { z } from 'zod'
+import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
+import { AwsS3Error } from '../../use-cases/errors/AwsS3Error'
+import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
+import { AddImageToUserUseCase } from '../../use-cases/user/addImageToUserUseCase'
+
+export async function addImageUser(
+  request: FastifyRequest,
+  response: FastifyReply,
+) {
+  const userRepository = new PrismaUsersRepository()
+  const addImageToUserUseCase = new AddImageToUserUseCase(userRepository)
+  const addImageUserParamsSchema = z.object({
+    userId: z.string().uuid(),
+  })
+
+  const { userId } = addImageUserParamsSchema.parse(request.params)
+  const photo = await request.file()
+
+  if (photo === undefined) {
+    return response.status(400).send({ error: 'Fail load a photo!' })
+  }
+
+  try {
+    const { user } = await addImageToUserUseCase.execute({ userId, photo })
+    return response.status(200).send({ user })
+  } catch (error) {
+    if (error instanceof ResourceNotFoundError) {
+      return response.status(400).send({ error: 'User was not found !' })
+    } else if (error instanceof AwsS3Error) {
+      return response.status(400).send({ error: error.message })
+    }
+    throw error
+  }
+}
