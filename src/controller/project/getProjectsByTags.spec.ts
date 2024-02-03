@@ -60,13 +60,22 @@ describe('Get Projets By Tags E2E', () => {
       .post(`/projects/tags`)
       .send({ tags })
 
+    console.log('getProjectsByTagsResponse')
+    console.log(getProjectsByTagsResponse.body.projects[0])
+
     expect(getProjectsByTagsResponse.statusCode).toEqual(200)
     expect(getProjectsByTagsResponse.body.projects).toHaveLength(2)
     expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
-      expect.objectContaining({ title: 'Project 01' }),
+      expect.objectContaining({
+        title: 'Project 01',
+        user: { name: 'John', surname: 'Doe', avatar_url: null },
+      }),
     )
     expect(getProjectsByTagsResponse.body.projects[1]).toEqual(
-      expect.objectContaining({ title: 'Project 02' }),
+      expect.objectContaining({
+        title: 'Project 02',
+        user: { name: 'John', surname: 'Doe', avatar_url: null },
+      }),
     )
   })
 
@@ -94,7 +103,10 @@ describe('Get Projets By Tags E2E', () => {
     expect(getProjectsByTagsResponse.statusCode).toEqual(200)
     expect(getProjectsByTagsResponse.body.projects).toHaveLength(1)
     expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
-      expect.objectContaining({ title: 'Project 03' }),
+      expect.objectContaining({
+        title: 'Project 03',
+        user: { name: 'John', surname: 'Doe', avatar_url: null },
+      }),
     )
   })
 })
