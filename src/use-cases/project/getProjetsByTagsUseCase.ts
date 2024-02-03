@@ -1,15 +1,13 @@
-import { Project } from '@prisma/client'
-
 import { ProjectRepository } from '../../repositories/project-repository'
 
-import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
+import { ProjectWithUserData } from '../../repositories/prisma/prisma-project-with-user-data-type'
 
 interface GetProjectsByTagsRequest {
   projectTags: string[]
 }
 
 interface GetProjectsByTagsResponse {
-  projects: Project[]
+  projects: ProjectWithUserData[]
 }
 
 export class GetProjectsByTagsUseCase {

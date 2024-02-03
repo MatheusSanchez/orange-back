@@ -50,11 +50,11 @@ describe('Get Projets By ID E2E', () => {
 
     expect(getProjectByIdResponse.statusCode).toEqual(200)
     expect(getProjectByIdResponse.body.project).toEqual(
-      expect.objectContaining({ title }),
-    )
-
-    expect(getProjectByIdResponse.body.project).toEqual(
-      expect.objectContaining({ tags }),
+      expect.objectContaining({
+        title,
+        user: { name: 'John', surname: 'Doe', avatar_url: null },
+        tags,
+      }),
     )
   })
 

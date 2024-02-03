@@ -1,11 +1,10 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
 import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
-import { ProjectRepository } from '../../repositories/project-repository'
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 import { GetProjectsByIdUseCase } from './getProjectsByIdUseCase'
 
-let projectRepository: ProjectRepository
+let projectRepository: InMemoryProjectRepository
 let getProjectByIdUseCase: GetProjectsByIdUseCase
 
 describe('Get Project By Id Use Case', () => {
@@ -15,12 +14,18 @@ describe('Get Project By Id Use Case', () => {
   })
 
   it('should be able get project by ID', async () => {
+    const newUser = await projectRepository.dbUser.create({
+      name: 'John',
+      surname: 'Doe',
+      email: 'johndoe@email.com',
+      password_hash: '123456',
+    })
     const newProject = await projectRepository.create({
       title: 'React Typescript 1',
       description: 'Best Project',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     const { project } = await getProjectByIdUseCase.execute({
@@ -32,6 +37,7 @@ describe('Get Project By Id Use Case', () => {
         title: 'React Typescript 1',
         id: newProject.id,
         tags: ['react', 'node'],
+        user: { name: 'John', surname: 'Doe', avatar_url: null },
       }),
     )
   })

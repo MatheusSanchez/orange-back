@@ -2,16 +2,23 @@ import { expect, describe, it, beforeEach } from 'vitest'
 
 import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
 
-import { ProjectRepository } from '../../repositories/project-repository'
 import { GetProjectsByTagsUseCase } from './getProjetsByTagsUseCase'
+import { User } from '@prisma/client'
 
-let projectRepository: ProjectRepository
+let projectRepository: InMemoryProjectRepository
 let getProjectsByTagsUseCase: GetProjectsByTagsUseCase
+let newUser: User
 
 describe('Get Project By Tags', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     projectRepository = new InMemoryProjectRepository()
     getProjectsByTagsUseCase = new GetProjectsByTagsUseCase(projectRepository)
+    newUser = await projectRepository.dbUser.create({
+      name: 'John',
+      surname: 'Doe',
+      email: 'johndoe@email.com',
+      password_hash: '123456',
+    })
   })
 
   it('should be able get projects that include a tag', async () => {
@@ -20,7 +27,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     await projectRepository.create({
@@ -28,7 +35,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project 2',
       tags: ['react', 'node', 'typescript'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     const { projects } = await getProjectsByTagsUseCase.execute({
@@ -37,11 +44,15 @@ describe('Get Project By Tags', () => {
 
     expect(projects).toHaveLength(1)
     expect(projects[0]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 2' }),
-    )
-
-    expect(projects[0]).toEqual(
-      expect.objectContaining({ tags: ['react', 'node', 'typescript'] }),
+      expect.objectContaining({
+        title: 'React Typescript 2',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+        tags: ['react', 'node', 'typescript'],
+      }),
     )
   })
 
@@ -51,7 +62,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     await projectRepository.create({
@@ -59,7 +70,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project 2',
       tags: ['react', 'node', 'typescript'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     await projectRepository.create({
@@ -67,7 +78,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project 2',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     const { projects } = await getProjectsByTagsUseCase.execute({
@@ -76,15 +87,36 @@ describe('Get Project By Tags', () => {
 
     expect(projects).toHaveLength(3)
     expect(projects[0]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 1' }),
+      expect.objectContaining({
+        title: 'React Typescript 1',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+      }),
     )
 
     expect(projects[1]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 2' }),
+      expect.objectContaining({
+        title: 'React Typescript 2',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+      }),
     )
 
     expect(projects[2]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 3' }),
+      expect.objectContaining({
+        title: 'React Typescript 3',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+      }),
     )
   })
 
@@ -94,7 +126,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     await projectRepository.create({
@@ -102,7 +134,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project 2',
       tags: ['react', 'node', 'typescript'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     await projectRepository.create({
@@ -110,7 +142,7 @@ describe('Get Project By Tags', () => {
       description: 'Best Project 2',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     const { projects } = await getProjectsByTagsUseCase.execute({
@@ -119,15 +151,36 @@ describe('Get Project By Tags', () => {
 
     expect(projects).toHaveLength(3)
     expect(projects[0]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 1' }),
+      expect.objectContaining({
+        title: 'React Typescript 1',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+      }),
     )
 
     expect(projects[1]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 2' }),
+      expect.objectContaining({
+        title: 'React Typescript 2',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+      }),
     )
 
     expect(projects[2]).toEqual(
-      expect.objectContaining({ title: 'React Typescript 3' }),
+      expect.objectContaining({
+        title: 'React Typescript 3',
+        user: {
+          name: newUser.name,
+          surname: newUser.surname,
+          avatar_url: null,
+        },
+      }),
     )
   })
 

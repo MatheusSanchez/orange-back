@@ -3,7 +3,7 @@ import { UserRepository } from '../user-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryUserRepository implements UserRepository {
-  private db: User[] = []
+  public db: User[] = []
 
   constructor() {}
 
@@ -27,8 +27,6 @@ export class InMemoryUserRepository implements UserRepository {
     return User
   }
 
-  // create in a in-memory database is just used to help us on unit tests;
-  // that's why is not in our interface :)
   async create({
     id,
     name,
@@ -38,7 +36,7 @@ export class InMemoryUserRepository implements UserRepository {
     country,
   }: Prisma.UserCreateInput) {
     const user: User = {
-      id: id == undefined ? randomUUID() : id,
+      id: id === undefined ? randomUUID() : id,
       name,
       surname,
 
@@ -47,6 +45,7 @@ export class InMemoryUserRepository implements UserRepository {
 
       created_at: new Date(),
       updated_at: new Date(),
+      avatar_url: null,
       country: country || 'brasil',
     }
 

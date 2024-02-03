@@ -1,17 +1,24 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 
 import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
-import { ProjectRepository } from '../../repositories/project-repository'
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 import { EditProjectUseCase } from './editProjectUseCase'
+import { User } from '@prisma/client'
 
-let projectRepository: ProjectRepository
+let projectRepository: InMemoryProjectRepository
 let editProjectUseCase: EditProjectUseCase
+let newUser: User
 
 describe('Edit Project By Id Use Case', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     projectRepository = new InMemoryProjectRepository()
     editProjectUseCase = new EditProjectUseCase(projectRepository)
+    newUser = await projectRepository.dbUser.create({
+      name: 'John',
+      surname: 'Doe',
+      email: 'johndoe@email.com',
+      password_hash: '123456',
+    })
   })
 
   it('should be able edit one project by ID', async () => {
@@ -20,7 +27,7 @@ describe('Edit Project By Id Use Case', () => {
       description: 'Best Project',
       tags: ['react', 'node'],
       link: 'https://github.com/luiseduardo3/nodets-petcanil',
-      user_id: 'user_id',
+      user_id: newUser.id,
     })
 
     const { project: projectEdited } = await editProjectUseCase.execute({
