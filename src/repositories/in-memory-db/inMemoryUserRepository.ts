@@ -1,10 +1,9 @@
 import { Prisma, User } from '@prisma/client'
-import { UserRepository } from '../user-repository'
+import { UserRepository, editUserRequestPrisma } from '../user-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryUserRepository implements UserRepository {
   public db: User[] = []
-
   constructor() {}
 
   async findByEmail(email: string): Promise<User | null> {
@@ -51,5 +50,23 @@ export class InMemoryUserRepository implements UserRepository {
 
     this.db.push(user)
     return user
+  }
+
+  async edit({
+    name,
+    surname,
+    country,
+    userId,
+  }: editUserRequestPrisma): Promise<User> {
+    const indexToUpdate = this.db.findIndex((user) => user.id === userId)
+
+    this.db[indexToUpdate] = {
+      ...this.db[indexToUpdate],
+      name,
+      surname,
+      country,
+    }
+
+    return this.db[indexToUpdate]
   }
 }
