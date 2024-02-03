@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
-import { AddImageToProjectUseCase } from '../../use-cases/addImageToProjectUseCase'
+import { AddImageToProjectUseCase } from '../../use-cases/project/addImageToProjectUseCase'
 import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
 import { AwsS3Error } from '../../use-cases/errors/AwsS3Error'
 

@@ -8,7 +8,6 @@ let userRepository: InMemoryUserRepository
 
 let getUserByIdUseCase: GetUserByIdUseCase
 
-
 describe('Get User By Id Use Case', () => {
   beforeEach(() => {
     userRepository = new InMemoryUserRepository()
@@ -24,7 +23,7 @@ describe('Get User By Id Use Case', () => {
     const newUser = await userRepository.create({
       email,
       name,
-      surname, 
+      surname,
       password_hash: await hash(password, 6),
     })
 
@@ -34,7 +33,7 @@ describe('Get User By Id Use Case', () => {
     expect(user.name).toEqual(name)
     expect(user.surname).toEqual(surname)
     expect(user.email).toEqual(email)
-
+    expect(user.country).toEqual('brasil')
   })
 
   it('should not be able to get user that does not exists', async () => {

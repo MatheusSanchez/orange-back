@@ -2,9 +2,12 @@ import { randomUUID } from 'crypto'
 
 import { Prisma, Project } from '@prisma/client'
 import { ProjectRepository } from '../project-repository'
+import { ProjectWithUserData } from '../prisma/prisma-project-with-user-data-type'
+import { InMemoryUserRepository } from './inMemoryUserRepository'
 
 export class InMemoryProjectRepository implements ProjectRepository {
   public dbProject: Project[] = []
+  public dbUser: InMemoryUserRepository = new InMemoryUserRepository()
 
   constructor() {}
 
@@ -18,6 +21,7 @@ export class InMemoryProjectRepository implements ProjectRepository {
       user_id: data.user_id,
       created_at: new Date(),
       updated_at: new Date(),
+      photo_url: null,
     }
 
     this.dbProject.push(project)
@@ -43,24 +47,82 @@ export class InMemoryProjectRepository implements ProjectRepository {
     return projects
   }
 
-  async fetchProjectById(projectId: string): Promise<Project | null> {
+  async fetchProjectById(
+    projectId: string,
+  ): Promise<ProjectWithUserData | null> {
     const project = this.dbProject.find((project) => project.id === projectId)
+
     if (!project) {
       return null
     }
-    return project
-  }
 
+    const {
+      created_at,
+      description,
+      id,
+      link,
+      photo_url,
+      tags,
+      title,
+      updated_at,
+      user_id,
+    } = project
+    const foundUser = this.dbUser.db.find((user) => user.id === project.user_id)
+
+    if (!foundUser) {
+      return null
+    }
+
+    return {
+      created_at,
+      description,
+      id,
+      link,
+      photo_url,
+      tags,
+      title,
+      updated_at,
+      user_id,
+      user: {
+        name: foundUser?.name,
+        surname: foundUser?.surname,
+        avatar_url: foundUser?.avatar_url,
+      },
+    }
+  }
 
   async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
     throw new Error('Method not implemented.')
   }
-  
-  async fetchProjectByTags(tags: string[]): Promise<Project[]> {
+
+  async deleteProjectByID(projectId: string): Promise<void> {
+    const index = this.dbProject.findIndex(
+      (project) => project.id === projectId,
+    )
+
+    if (index !== -1) {
+      this.dbProject.splice(index, 1)
+    }
+  }
+
+  async fetchProjectByTags(tags: string[]): Promise<ProjectWithUserData[]> {
     const projects = this.dbProject.filter((project) =>
       project.tags.some((tag) => tags.includes(tag)),
     )
 
-    return projects
+    const projectPromises = projects.map(async (project) => {
+      const user = await this.dbUser.findById(project.user_id)
+
+      return {
+        ...project,
+        user: {
+          name: user.name,
+          surname: user.surname,
+          avatar_url: user.avatar_url,
+        },
+      }
+    })
+
+    return Promise.all(projectPromises)
   }
 }

@@ -8,9 +8,7 @@ import path from 'path'
 import fastifyStatic from '@fastify/static'
 import { getProjectsByTags } from './getProjectsByTags'
 import { editProject } from './editProjectById'
-import createProjectSwagger from './swagger/createProjectSwagger.json'
-import getProjectByIdSchema from './swagger/getProjectByIDSwagger.json'
-import getProjectByUserIdSchema from './swagger/getProjectsByUserIdSwagger.json'
+import { deleteProjectById } from './deleteProjectById'
 
 export async function projectRoutes(app: FastifyInstance) {
   app.register(FastifyMultipart, {
@@ -33,4 +31,5 @@ export async function projectRoutes(app: FastifyInstance) {
   app.post('/user/:userId/project', createProjectSwagger, createProject)
 
   app.put('/project/:projectId/edit', editProject)
+  app.delete('/project/:projectId', deleteProjectById)
 }

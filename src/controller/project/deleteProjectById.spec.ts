@@ -1,17 +1,16 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import request from 'supertest'
-import { app } from '../../app'
 import { ProjectRepository } from '../../repositories/project-repository'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
-
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { UserRepository } from '../../repositories/user-repository'
-import { randomUUID } from 'crypto'
+import { app } from "../../app"
+import { randomUUID } from "crypto"
 
 let projectRepository: ProjectRepository
 let userRepository: UserRepository
 
-describe('Get Projets By ID E2E', () => {
+describe('Delete Project By ID E2E', () => {
   beforeAll(async () => {
     projectRepository = new PrismaProjectRepository()
     userRepository = new PrismaUsersRepository()
@@ -23,7 +22,7 @@ describe('Get Projets By ID E2E', () => {
     await app.close()
   })
 
-  it('should be able to get a project by ID', async () => {
+  it('should be able to delete a project by ID', async () => {
     const description = 'ReactProject'
     const link = 'www.google.com.br'
     const tags = ['react', 'node']
@@ -44,31 +43,26 @@ describe('Get Projets By ID E2E', () => {
       user_id: newUser.id,
     })
 
-    const getProjectByIdResponse = await request(app.server).get(
+    const deletedProjectByIdResponse = await request(app.server).delete(
       `/project/${project.id}`,
     )
 
-    expect(getProjectByIdResponse.statusCode).toEqual(200)
-    expect(getProjectByIdResponse.body.project).toEqual(
-      expect.objectContaining({
-        title,
-        user: { name: 'John', surname: 'Doe', avatar_url: null },
-        tags,
-      }),
-    )
+    expect(deletedProjectByIdResponse.statusCode).toEqual(200)
+    expect(deletedProjectByIdResponse.body).toEqual({})
   })
 
-  it('should not be able to get a project that does not exist', async () => {
-    const getProjectByIdResponse = await request(app.server).get(
+  it('should not be able to delete a project by ID that does not exist', async () => {
+
+    const deletedProjectByIdResponse = await request(app.server).delete(
       `/project/${randomUUID()}`,
     )
 
-    expect(getProjectByIdResponse.statusCode).toEqual(404)
-
-    expect(getProjectByIdResponse.body).toEqual(
+    expect(deletedProjectByIdResponse.statusCode).toEqual(404)
+    expect(deletedProjectByIdResponse.body).toEqual(
       expect.objectContaining({
-        error: 'Project was not Found !',
+        error: 'Unable to delete project !',
       }),
     )
   })
+
 })
