@@ -1,6 +1,10 @@
 import { Prisma, User } from '@prisma/client'
 import { prisma } from '../../lib/prisma'
-import { UserRepository, editUserRequestPrisma } from '../user-repository'
+import {
+  UserRepository,
+  editUserPasswordRequestPrisma,
+  editUserRequestPrisma,
+} from '../user-repository'
 
 export class PrismaUsersRepository implements UserRepository {
   async findByEmail(email: string): Promise<User | null> {
@@ -31,7 +35,6 @@ export class PrismaUsersRepository implements UserRepository {
     return user
   }
 
-
   async edit({
     name,
     surname,
@@ -45,7 +48,13 @@ export class PrismaUsersRepository implements UserRepository {
 
     return user
   }
-  
+
+  async editPassword({
+    password_hash,
+    userId,
+  }: editUserPasswordRequestPrisma): Promise<User> {
+    throw new Error('Method not implemented.')
+  }
 
   async addPhotoUrl(userId: string, photoUrl: string): Promise<User> {
     const user = await prisma.user.update({

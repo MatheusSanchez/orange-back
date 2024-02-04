@@ -1,10 +1,27 @@
 import { Prisma, User } from '@prisma/client'
-import { UserRepository, editUserRequestPrisma } from '../user-repository'
+import {
+  UserRepository,
+  editUserPasswordRequestPrisma,
+  editUserRequestPrisma,
+} from '../user-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryUserRepository implements UserRepository {
   public db: User[] = []
   constructor() {}
+  async editPassword({
+    password_hash,
+    userId,
+  }: editUserPasswordRequestPrisma): Promise<User> {
+    const indexToUpdate = this.db.findIndex((user) => user.id === userId)
+
+    this.db[indexToUpdate] = {
+      ...this.db[indexToUpdate],
+      password_hash,
+    }
+
+    return this.db[indexToUpdate]
+  }
 
   async findByEmail(email: string): Promise<User | null> {
     const User = this.db.find((User) => User.email === email)
@@ -52,7 +69,6 @@ export class InMemoryUserRepository implements UserRepository {
     return user
   }
 
-
   async edit({
     name,
     surname,
@@ -70,6 +86,7 @@ export class InMemoryUserRepository implements UserRepository {
 
     return this.db[indexToUpdate]
   }
+
   async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
     throw new Error('Method not implemented.')
   }
