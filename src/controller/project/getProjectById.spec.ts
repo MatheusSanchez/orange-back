@@ -5,7 +5,7 @@ import { ProjectRepository } from '../../repositories/project-repository'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
 
 import { randomUUID } from 'crypto'
-import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
+import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
 
 let projectRepository: ProjectRepository
 
