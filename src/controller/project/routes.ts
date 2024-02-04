@@ -4,11 +4,10 @@ import { getProjectsByUserId } from './getProjectsByUserId'
 import { getProjectsById } from './getProjectById'
 import { addImageProject } from './addImageToProject'
 import FastifyMultipart from '@fastify/multipart'
-import path from 'path'
-import fastifyStatic from '@fastify/static'
 import { getProjectsByTags } from './getProjectsByTags'
 import { editProject } from './editProjectById'
 import { deleteProjectById } from './deleteProjectById'
+import { verifyJWT } from '../middlewares/verifyJwt'
 
 export async function projectRoutes(app: FastifyInstance) {
   app.register(FastifyMultipart, {
@@ -18,18 +17,17 @@ export async function projectRoutes(app: FastifyInstance) {
     },
   })
 
-  app.register(fastifyStatic, {
-    root: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-    prefix: '/project/photo',
-  })
+  app.post('/projects/tags', { onRequest: verifyJWT }, getProjectsByTags)
+  app.get('/projects/:userId', { onRequest: verifyJWT }, getProjectsByUserId)
+  app.get('/project/:projectId', { onRequest: verifyJWT }, getProjectsById)
 
-  app.post('/projects/tags', getProjectsByTags)
-  app.get('/projects/:userId', getProjectsByUserId)
-  app.get('/project/:projectId', getProjectsById)
+  app.post(
+    '/project/:projectId/photo',
+    { onRequest: verifyJWT },
+    addImageProject,
+  )
+  app.post('/user/:userId/project', { onRequest: verifyJWT }, createProject)
 
-  app.post('/project/:projectId/photo', addImageProject)
-  app.post('/user/:userId/project', createProject)
-
-  app.put('/project/:projectId/edit', editProject)
-  app.delete('/project/:projectId', deleteProjectById)
+  app.put('/project/:projectId/edit', { onRequest: verifyJWT }, editProject)
+  app.delete('/project/:projectId', { onRequest: verifyJWT }, deleteProjectById)
 }

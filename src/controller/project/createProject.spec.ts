@@ -2,19 +2,17 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
 import { randomUUID } from 'crypto'
-import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { ProjectRepository } from '../../repositories/project-repository'
-import { UserRepository } from '../../repositories/user-repository'
+import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
 
-let projectRepository: ProjectRepository
-let userRepository: UserRepository
+let userAuth: {
+  token: string
+  userId: string
+}
 
 describe('createProject E2E', () => {
   beforeAll(async () => {
-    projectRepository = new PrismaProjectRepository()
-    userRepository = new PrismaUsersRepository()
     await app.ready()
+    userAuth = await createAndAuthenticateUser(app)
   })
 
   afterAll(async () => {
@@ -29,16 +27,10 @@ describe('createProject E2E', () => {
       description: 'Squad40 description',
     }
 
-    const newUser = await userRepository.create({
-      email: 'john_doe@email.com',
-      name: 'John',
-      surname: 'Doe',
-      password_hash: 'password',
-    })
-
     const createProjectResponse = await request(app.server)
-      .post(`/user/${newUser.id}/project`)
+      .post(`/user/${userAuth.userId}/project`)
       .send(createProjectBody)
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(createProjectResponse.statusCode).toEqual(201)
     expect(createProjectResponse.body.project.title).toEqual('Squad40 Project')
@@ -58,6 +50,7 @@ describe('createProject E2E', () => {
     const response = await request(app.server)
       .post(`/user/${userId}/project`)
       .send(createProjectBody)
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(response.body.message).toContain('User was not Found !')
     expect(response.status).toEqual(404)

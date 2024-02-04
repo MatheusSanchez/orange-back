@@ -4,19 +4,21 @@ import { app } from '../../app'
 import { ProjectRepository } from '../../repositories/project-repository'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
 
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { UserRepository } from '../../repositories/user-repository'
 import { randomUUID } from 'crypto'
+import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
 
 let projectRepository: ProjectRepository
-let userRepository: UserRepository
+
+let userAuth: {
+  token: string
+  userId: string
+}
 
 describe('Get Projets By ID E2E', () => {
   beforeAll(async () => {
     projectRepository = new PrismaProjectRepository()
-    userRepository = new PrismaUsersRepository()
-
     await app.ready()
+    userAuth = await createAndAuthenticateUser(app)
   })
 
   afterAll(async () => {
@@ -29,24 +31,17 @@ describe('Get Projets By ID E2E', () => {
     const tags = ['react', 'node']
     const title = 'ReactProject'
 
-    const newUser = await userRepository.create({
-      email: 'john_doe@email.com',
-      name: 'John',
-      surname: 'Doe',
-      password_hash: 'password',
-    })
-
     const project = await projectRepository.create({
       description,
       link,
       tags,
       title,
-      user_id: newUser.id,
+      user_id: userAuth.userId,
     })
 
-    const getProjectByIdResponse = await request(app.server).get(
-      `/project/${project.id}`,
-    )
+    const getProjectByIdResponse = await request(app.server)
+      .get(`/project/${project.id}`)
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(getProjectByIdResponse.statusCode).toEqual(200)
     expect(getProjectByIdResponse.body.project).toEqual(
@@ -59,9 +54,9 @@ describe('Get Projets By ID E2E', () => {
   })
 
   it('should not be able to get a project that does not exist', async () => {
-    const getProjectByIdResponse = await request(app.server).get(
-      `/project/${randomUUID()}`,
-    )
+    const getProjectByIdResponse = await request(app.server)
+      .get(`/project/${randomUUID()}`)
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(getProjectByIdResponse.statusCode).toEqual(404)
 

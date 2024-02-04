@@ -5,6 +5,7 @@ import { registerUser } from './registerUser'
 import { editUserById } from './editUserById'
 import { addImageUser } from './addImageToUser'
 import FastifyMultipart from '@fastify/multipart'
+import { verifyJWT } from '../middlewares/verifyJwt'
 
 export async function userRoutes(app: FastifyInstance) {
   app.register(FastifyMultipart, {
@@ -14,8 +15,8 @@ export async function userRoutes(app: FastifyInstance) {
     },
   })
   app.post('/user', registerUser)
-  app.get('/user/:id', getUserById)
-  app.get('/user', getUserByEmail)
-  app.put('/user/:userId/edit', editUserById)
-  app.post('/user/:userId/photo', addImageUser)
+  app.get('/user/:id', { onRequest: verifyJWT }, getUserById)
+  app.get('/user', { onRequest: verifyJWT }, getUserByEmail)
+  app.put('/user/:userId/edit', { onRequest: verifyJWT }, editUserById)
+  app.post('/user/:userId/photo', { onRequest: verifyJWT }, addImageUser)
 }
