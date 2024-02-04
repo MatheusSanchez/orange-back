@@ -10,12 +10,14 @@ export async function registerUser(
 ) {
   const registerBodySchema = z.object({
     name: z.string(),
-    surname: z.string(),
+    surname: z.string().optional(),
     email: z.string().email(),
     password: z.string().min(6),
+    avatar_url: z.string().optional(),
+    is_google: z.boolean().optional()
   })
 
-  const { name, surname, email, password } = registerBodySchema.parse(
+  const { name, surname, email, password, avatar_url, is_google } = registerBodySchema.parse(
     request.body,
   )
 
@@ -27,6 +29,8 @@ export async function registerUser(
       surname,
       email,
       password,
+      avatar_url,
+      is_google,
     })
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {

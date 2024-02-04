@@ -5,9 +5,11 @@ import { User } from '@prisma/client'
 
 interface CreateUserUseCaseRequest {
   name: string
-  surname: string
+  surname?: string
   email: string
   password: string
+  avatar_url?: string
+  is_google?: boolean
 }
 
 interface CreateUserUseCaseResponse {
@@ -22,6 +24,8 @@ export class CreateUserUseCase {
     surname, 
     email, 
     password, 
+    avatar_url,
+    is_google
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
@@ -35,7 +39,9 @@ export class CreateUserUseCase {
       name,
       surname,
       email,
-      password_hash
+      password_hash,
+      avatar_url,
+      is_google
     })
     
     return {
