@@ -2,11 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
 import { randomUUID } from 'crypto'
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { UserRepository } from '../../repositories/user-repository'
 import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
-
-let userRepository: UserRepository
 
 let userAuth: {
   token: string
@@ -15,7 +11,6 @@ let userAuth: {
 
 describe('edit User E2E', () => {
   beforeAll(async () => {
-    userRepository = new PrismaUsersRepository()
     await app.ready()
     userAuth = await createAndAuthenticateUser(app)
   })

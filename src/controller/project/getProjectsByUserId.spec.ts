@@ -3,20 +3,22 @@ import request from 'supertest'
 import { app } from '../../app'
 import { ProjectRepository } from '../../repositories/project-repository'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { UserRepository } from '../../repositories/user-repository'
 import { randomUUID } from 'crypto'
 import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
 
 let projectRepository: ProjectRepository
-let userRepository: UserRepository
+
+let userAuth: {
+  token: string
+  userId: string
+}
 
 describe('Get Projets By UserId E2E', () => {
   beforeAll(async () => {
     projectRepository = new PrismaProjectRepository()
-    userRepository = new PrismaUsersRepository()
 
     await app.ready()
+    userAuth = await createAndAuthenticateUser(app)
   })
 
   afterAll(async () => {
@@ -24,19 +26,10 @@ describe('Get Projets By UserId E2E', () => {
   })
 
   it('should be able to get all projects from an user', async () => {
-    const { token } = await createAndAuthenticateUser(app)
-
     const description = 'ReactProject'
     const link = 'www.google.com.br'
     const tags = ['react', 'node']
     const title = 'ReactProject'
-
-    const newUser = await userRepository.create({
-      email: 'john_doe@email.com',
-      name: 'John',
-      surname: 'Doe',
-      password_hash: 'password',
-    })
 
     await projectRepository.create({
       // First Project
@@ -44,7 +37,7 @@ describe('Get Projets By UserId E2E', () => {
       link,
       tags,
       title,
-      user_id: newUser.id,
+      user_id: userAuth.userId,
     })
 
     await projectRepository.create({
@@ -53,12 +46,12 @@ describe('Get Projets By UserId E2E', () => {
       link,
       tags,
       title,
-      user_id: newUser.id,
+      user_id: userAuth.userId,
     })
 
     const getProjectsByUserIdResponse = await request(app.server)
-      .get(`/projects/${newUser.id}`)
-      .set('Authorization', `Bearer ${token}`)
+      .get(`/projects/${userAuth.userId}`)
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(getProjectsByUserIdResponse.statusCode).toEqual(200)
     expect(getProjectsByUserIdResponse.body.projects).toHaveLength(2)
@@ -72,10 +65,9 @@ describe('Get Projets By UserId E2E', () => {
   })
 
   it('should not be able to project that user does not exist', async () => {
-    const { token } = await createAndAuthenticateUser(app)
     const getProjectsByUserIdResponse = await request(app.server)
       .get(`/projects/${randomUUID()}`)
-      .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(getProjectsByUserIdResponse.statusCode).toEqual(404)
 
