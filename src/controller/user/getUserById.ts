@@ -11,15 +11,9 @@ export async function getUserById(
   const userRepository = new PrismaUsersRepository()
   const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
 
-  const getUserByIdBodySchema = z.object({
-    id: z.string().uuid(),
-  })
-
-  const { id } = getUserByIdBodySchema.parse(request.params)
-
   try {
     const { user } = await getUserByIdUseCase.execute({
-      id,
+      id: request.user.sub,
     })
     return response
       .status(200)
