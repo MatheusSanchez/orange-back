@@ -19,17 +19,16 @@ interface CreateUserUseCaseResponse {
 export class CreateUserUseCase {
   constructor(private usersRepository: UserRepository) {}
 
-  async execute({ 
-    name, 
-    surname, 
-    email, 
-    password, 
+  async execute({
+    name,
+    surname,
+    email,
+    password,
     avatar_url,
-    is_google
+    is_google,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
-  
+
     if (userWithSameEmail) {
       throw new UserAlreadyExistsError()
     }
@@ -41,15 +40,11 @@ export class CreateUserUseCase {
       email,
       password_hash,
       avatar_url,
-      is_google
+      is_google,
     })
-    
+
     return {
       user,
     }
-   
   }
 }
-
-
-
