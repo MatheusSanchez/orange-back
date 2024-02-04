@@ -29,7 +29,7 @@ describe('Get User By email E2E', () => {
       expect.objectContaining({
         email: 'johndoe@example.com',
         id: userAuth.userId,
-        country: 'brasil',
+        country: 'Brazil',
       }),
     )
   })
