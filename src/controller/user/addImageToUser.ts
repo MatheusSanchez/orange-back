@@ -24,7 +24,9 @@ export async function addImageUser(
 
   try {
     const { user } = await addImageToUserUseCase.execute({ userId, photo })
-    return response.status(200).send({ user })
+    return response
+      .status(200)
+      .send({ user: { ...user, password_hash: undefined } })
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       return response.status(400).send({ error: 'User was not found !' })
