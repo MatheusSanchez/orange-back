@@ -31,7 +31,7 @@ export class EditUserPasswordUseCase {
     const passwordMatched = await compare(oldPassword, user.password_hash)
 
     if (!passwordMatched) {
-      throw new InvalidCredentialsError('Email e/ou senha inválido.')
+      throw new InvalidCredentialsError()
     }
 
     const password_hash = await hash(newPassword, 6)

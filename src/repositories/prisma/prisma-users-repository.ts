@@ -53,7 +53,15 @@ export class PrismaUsersRepository implements UserRepository {
     password_hash,
     userId,
   }: editUserPasswordRequestPrisma): Promise<User> {
-    throw new Error('Method not implemented.')
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password_hash,
+      },
+    })
+    return user
   }
 
   async addPhotoUrl(userId: string, photoUrl: string): Promise<User> {
