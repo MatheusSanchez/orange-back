@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
 import { randomUUID } from 'crypto'
-import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
+import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
 
 let userAuth: {
   token: string
@@ -50,6 +50,7 @@ describe('createProject E2E', () => {
     const response = await request(app.server)
       .post(`/user/${userId}/project`)
       .send(createProjectBody)
+
       .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(response.body.message).toContain('User was not Found !')

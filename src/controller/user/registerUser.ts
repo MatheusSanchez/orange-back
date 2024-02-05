@@ -14,12 +14,11 @@ export async function registerUser(
     email: z.string().email(),
     password: z.string().min(6),
     avatar_url: z.string().optional(),
-    is_google: z.boolean().optional()
+    is_google: z.boolean().optional(),
   })
 
-  const { name, surname, email, password, avatar_url, is_google } = registerBodySchema.parse(
-    request.body,
-  )
+  const { name, surname, email, password, avatar_url, is_google } =
+    registerBodySchema.parse(request.body)
 
   const usersRepository = new PrismaUsersRepository()
   const createUserUseCase = new CreateUserUseCase(usersRepository)
