@@ -30,7 +30,7 @@ export async function authUser(
       },
     )
 
-    return response.status(200).send({ user, token })
+    return response.status(200).send({ token })
   } catch (e) {
     if (e instanceof InvalidCredentialsError) {
       return response.status(401).send()
