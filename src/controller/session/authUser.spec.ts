@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import { app } from '../../app'
 import request from 'supertest'
-import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
+import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
 let userAuth: {
   token: string
   userId: string

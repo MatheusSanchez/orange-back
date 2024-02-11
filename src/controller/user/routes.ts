@@ -1,6 +1,5 @@
 import { FastifyInstance } from 'fastify'
 import { getUserById } from './getUserById'
-import { getUserByEmail } from './getUserByEmail'
 import { registerUser } from './registerUser'
 import { editUserById } from './editUserById'
 import { addImageUser } from './addImageToUser'
