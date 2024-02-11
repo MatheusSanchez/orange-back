@@ -42,71 +42,64 @@ describe('Get Projets By Tags E2E', () => {
         tags: ['tag7', 'tag8', 'tag9'],
       },
     ]
-    console.log('Creating projects')
     for (const project of projectsToBeCreate) {
       await request(app.server)
-        .post(`/user/${userAuth.userId}/project`)
+        .post(`/user/project`)
         .set('Authorization', `Bearer ${userAuth.token}`)
-
         .send(project)
     }
-
-    console.log('Finish Creating projects')
-
-    console.log('Get By tags projects')
 
     const getProjectsByTagsResponse = await request(app.server)
       .post(`/projects/tags`)
       .send({ tags })
       .set('Authorization', `Bearer ${userAuth.token}`)
 
-    console.log('End By tags projects')
     expect(getProjectsByTagsResponse.statusCode).toEqual(200)
     expect(getProjectsByTagsResponse.body.projects).toHaveLength(2)
     expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
       expect.objectContaining({
-        title: 'Project 01',
+        ...projectsToBeCreate[0],
         user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
       }),
     )
     expect(getProjectsByTagsResponse.body.projects[1]).toEqual(
       expect.objectContaining({
-        title: 'Project 02',
+        ...projectsToBeCreate[1],
         user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
       }),
     )
   })
 
-  // it('should return 200 and empty object when not find projects by some tag', async () => {
-  //   const tags = ['tagNotExist', 'tagNotExist']
+  it('should return 200 and empty object when not find projects by some tag', async () => {
+    const tags = ['tagNotExist', 'tagNotExist']
 
-  //   const getProjectsByTagsResponse = await request(app.server)
-  //     .post(`/projects/tags`)
-  //     .send({ tags })
-  //     .set('Authorization', `Bearer ${userAuth.token}`)
+    const getProjectsByTagsResponse = await request(app.server)
+      .post(`/projects/tags`)
+      .send({ tags })
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
-  //   expect(getProjectsByTagsResponse.statusCode).toEqual(200)
-  //   expect(getProjectsByTagsResponse.body.projects).toHaveLength(0)
-  // })
+    expect(getProjectsByTagsResponse.statusCode).toEqual(200)
+    expect(getProjectsByTagsResponse.body.projects).toHaveLength(0)
+  })
 
-  // it('should be able to get all projects NOT BEING case- sensitive', async () => {
-  //   const tags = ['tAG7', 'TAG8', 'Tag9']
+  it('should be able to get all projects NOT BEING case- sensitive', async () => {
+    const tags = ['tAG7', 'TAG8', 'Tag9']
 
-  //   // Projects with tags ['tag7', 'tag8', 'tag9'] are already registered
-  //   // once the database is set up once per file.
+    // Projects with tags ['tag7', 'tag8', 'tag9'] are already registered
+    // once the database is set up once per file.
 
-  //   const getProjectsByTagsResponse = await request(app.server)
-  //     .post(`/projects/tags`)
-  //     .send({ tags })
-  //     .set('Authorization', `Bearer ${userAuth.token}`)
+    const getProjectsByTagsResponse = await request(app.server)
+      .post(`/projects/tags`)
+      .send({ tags })
+      .set('Authorization', `Bearer ${userAuth.token}`)
 
-  //   expect(getProjectsByTagsResponse.statusCode).toEqual(200)
-  //   expect(getProjectsByTagsResponse.body.projects).toHaveLength(1)
-  //   expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
-  //     expect.objectContaining({
-  //       title: 'Project 03',
-  //       user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
-  //     }),
-  //   )
-  // })
+    expect(getProjectsByTagsResponse.statusCode).toEqual(200)
+    expect(getProjectsByTagsResponse.body.projects).toHaveLength(1)
+    expect(getProjectsByTagsResponse.body.projects[0]).toEqual(
+      expect.objectContaining({
+        title: 'Project 03',
+        user: { name: 'John', surname: 'Doe', avatar_url: expect.any(String) },
+      }),
+    )
+  })
 })

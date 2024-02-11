@@ -43,7 +43,6 @@ describe('edit User Pass E2E', () => {
 
     expect(userData.statusCode).toEqual(200)
     expect(userData.body).toEqual({
-      user: expect.any(Object),
       token: expect.any(String),
     })
   })

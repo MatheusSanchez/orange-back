@@ -14,30 +14,19 @@ export async function editUserById(
     country: z.string(),
   })
 
-  const editUserParamsSchema = z.object({
-    userId: z.string().uuid(),
-  })
-
   const { name, surname, country } = editUserBodySchema.parse(request.body)
-  const { userId } = editUserParamsSchema.parse(request.params)
 
   const userRepository = new PrismaUsersRepository()
   const editUserUseCase = new EditUserUseCase(userRepository)
 
-  try {
-    const { user } = await editUserUseCase.execute({
-      name,
-      surname,
-      country,
-      userId,
-    })
+  const { user } = await editUserUseCase.execute({
+    name,
+    surname,
+    country,
+    userId: request.user.sub,
+  })
 
-    return response
-      .status(200)
-      .send({ user: { ...user, password_hash: undefined } })
-  } catch (error) {
-    if (error instanceof ResourceNotFoundError) {
-      return response.status(404).send({ error: 'User was not Found !' })
-    }
-  }
+  return response
+    .status(200)
+    .send({ user: { ...user, password_hash: undefined } })
 }

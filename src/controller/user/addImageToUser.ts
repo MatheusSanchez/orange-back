@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
 import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
 import { AwsS3Error } from '../../use-cases/errors/AwsS3Error'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
@@ -11,11 +10,7 @@ export async function addImageUser(
 ) {
   const userRepository = new PrismaUsersRepository()
   const addImageToUserUseCase = new AddImageToUserUseCase(userRepository)
-  const addImageUserParamsSchema = z.object({
-    userId: z.string().uuid(),
-  })
 
-  const { userId } = addImageUserParamsSchema.parse(request.params)
   const photo = await request.file()
 
   if (photo === undefined) {
@@ -23,7 +18,10 @@ export async function addImageUser(
   }
 
   try {
-    const { user } = await addImageToUserUseCase.execute({ userId, photo })
+    const { user } = await addImageToUserUseCase.execute({
+      userId: request.user.sub,
+      photo,
+    })
     return response
       .status(200)
       .send({ user: { ...user, password_hash: undefined } })

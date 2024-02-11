@@ -18,7 +18,7 @@ export async function projectRoutes(app: FastifyInstance) {
   })
 
   app.post('/projects/tags', { onRequest: verifyJWT }, getProjectsByTags)
-  app.get('/projects/:userId', { onRequest: verifyJWT }, getProjectsByUserId)
+  app.get('/projects', { onRequest: verifyJWT }, getProjectsByUserId)
   app.get('/project/:projectId', { onRequest: verifyJWT }, getProjectsById)
 
   app.post(
@@ -26,7 +26,7 @@ export async function projectRoutes(app: FastifyInstance) {
     { onRequest: verifyJWT },
     addImageProject,
   )
-  app.post('/user/:userId/project', { onRequest: verifyJWT }, createProject)
+  app.post('/user/project', { onRequest: verifyJWT }, createProject)
 
   app.put('/project/:projectId/edit', { onRequest: verifyJWT }, editProject)
   app.delete('/project/:projectId', { onRequest: verifyJWT }, deleteProjectById)

@@ -3,7 +3,6 @@ import request from 'supertest'
 import { app } from '../../app'
 import { ProjectRepository } from '../../repositories/project-repository'
 import { PrismaProjectRepository } from '../../repositories/prisma/prisma-project-repository'
-import { randomUUID } from 'crypto'
 import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
 
 let projectRepository: ProjectRepository
@@ -50,7 +49,7 @@ describe('Get Projets By UserId E2E', () => {
     })
 
     const getProjectsByUserIdResponse = await request(app.server)
-      .get(`/projects/${userAuth.userId}`)
+      .get(`/projects`)
       .set('Authorization', `Bearer ${userAuth.token}`)
 
     expect(getProjectsByUserIdResponse.statusCode).toEqual(200)
@@ -64,16 +63,16 @@ describe('Get Projets By UserId E2E', () => {
     )
   })
 
-  it('should not be able to project that user does not exist', async () => {
-    const getProjectsByUserIdResponse = await request(app.server)
-      .get(`/projects/${randomUUID()}`)
-      .set('Authorization', `Bearer ${userAuth.token}`)
+  it('should not be able to get projects without authenticate', async () => {
+    const getProjectsByUserIdResponse = await request(app.server).get(
+      `/projects`,
+    )
 
-    expect(getProjectsByUserIdResponse.statusCode).toEqual(404)
+    expect(getProjectsByUserIdResponse.statusCode).toEqual(401)
 
     expect(getProjectsByUserIdResponse.body).toEqual(
       expect.objectContaining({
-        error: 'User was not Found !',
+        message: 'Unauthorized',
       }),
     )
   })

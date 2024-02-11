@@ -28,9 +28,7 @@ export async function editUserPassword(
       .status(200)
       .send({ user: { ...user, password_hash: undefined } })
   } catch (error) {
-    if (error instanceof ResourceNotFoundError) {
-      return response.status(404).send({ error: 'User was not Found !' })
-    } else if (error instanceof InvalidCredentialsError) {
+    if (error instanceof InvalidCredentialsError) {
       return response.status(401).send({ error: 'Invalid old Password!' })
     }
 
