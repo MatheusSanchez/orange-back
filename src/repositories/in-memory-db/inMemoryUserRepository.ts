@@ -1,10 +1,27 @@
 import { Prisma, User } from '@prisma/client'
-import { UserRepository, editUserRequestPrisma } from '../user-repository'
+import {
+  UserRepository,
+  editUserPasswordRequestPrisma,
+  editUserRequestPrisma,
+} from '../user-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryUserRepository implements UserRepository {
   public db: User[] = []
   constructor() {}
+  async editPassword({
+    password_hash,
+    userId,
+  }: editUserPasswordRequestPrisma): Promise<User> {
+    const indexToUpdate = this.db.findIndex((user) => user.id === userId)
+
+    this.db[indexToUpdate] = {
+      ...this.db[indexToUpdate],
+      password_hash,
+    }
+
+    return this.db[indexToUpdate]
+  }
 
   async findByEmail(email: string): Promise<User | null> {
     const User = this.db.find((User) => User.email === email)
@@ -33,6 +50,8 @@ export class InMemoryUserRepository implements UserRepository {
     email,
     password_hash,
     country,
+    avatar_url,
+    is_google,
   }: Prisma.UserCreateInput) {
     const user: User = {
       id: id === undefined ? randomUUID() : id,
@@ -44,14 +63,16 @@ export class InMemoryUserRepository implements UserRepository {
 
       created_at: new Date(),
       updated_at: new Date(),
-      avatar_url: null,
+      avatar_url:
+        avatar_url ||
+        'https://orangeapp-contents-prod.s3.amazonaws.com/avatar1.png',
+      is_google: is_google || false,
       country: country || 'brasil',
     }
 
     this.db.push(user)
     return user
   }
-
 
   async edit({
     name,
@@ -70,6 +91,7 @@ export class InMemoryUserRepository implements UserRepository {
 
     return this.db[indexToUpdate]
   }
+
   async addPhotoUrl(projectId: string, photoUrl: string): Promise<Project> {
     throw new Error('Method not implemented.')
   }

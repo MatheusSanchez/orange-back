@@ -1,7 +1,13 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
-import { createAndAuthenticateUser } from '../../utils/create-and-authenticate-user'
+import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
+import { randomUUID } from 'crypto'
+
+let userAuth: {
+  token: string
+  userId: string
+}
 
 describe('Get User By Id E2E', () => {
   beforeAll(async () => {
@@ -21,7 +27,7 @@ describe('Get User By Id E2E', () => {
     expect(getUserByIdResponse.statusCode).toEqual(200)
     expect(getUserByIdResponse.body.user).toEqual(
       expect.objectContaining({
-        country: 'brasil',
+        country: 'Brazil',
         name: 'John',
         surname: 'Doe',
         email: 'johndoe@example.com',

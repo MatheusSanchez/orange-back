@@ -5,9 +5,11 @@ import { User } from '@prisma/client'
 
 interface CreateUserUseCaseRequest {
   name: string
-  surname: string
+  surname?: string
   email: string
   password: string
+  avatar_url?: string
+  is_google?: boolean
 }
 
 interface CreateUserUseCaseResponse {
@@ -17,15 +19,16 @@ interface CreateUserUseCaseResponse {
 export class CreateUserUseCase {
   constructor(private usersRepository: UserRepository) {}
 
-  async execute({ 
-    name, 
-    surname, 
-    email, 
-    password, 
+  async execute({
+    name,
+    surname,
+    email,
+    password,
+    avatar_url,
+    is_google,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    
     const userWithSameEmail = await this.usersRepository.findByEmail(email)
-  
+
     if (userWithSameEmail) {
       throw new UserAlreadyExistsError()
     }
@@ -35,15 +38,13 @@ export class CreateUserUseCase {
       name,
       surname,
       email,
-      password_hash
+      password_hash,
+      avatar_url,
+      is_google,
     })
-    
+
     return {
       user,
     }
-   
   }
 }
-
-
-

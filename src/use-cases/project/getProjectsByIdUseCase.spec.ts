@@ -3,6 +3,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMemoryProjectRepository'
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError'
 import { GetProjectsByIdUseCase } from './getProjectsByIdUseCase'
+import { defaultUserAvatarUrl } from '../../utils/tests/defaultUserAvatarUrl'
 
 let projectRepository: InMemoryProjectRepository
 let getProjectByIdUseCase: GetProjectsByIdUseCase
@@ -37,7 +38,11 @@ describe('Get Project By Id Use Case', () => {
         title: 'React Typescript 1',
         id: newProject.id,
         tags: ['react', 'node'],
-        user: { name: 'John', surname: 'Doe', avatar_url: null },
+        user: {
+          name: 'John',
+          surname: 'Doe',
+          avatar_url: defaultUserAvatarUrl,
+        },
       }),
     )
   })

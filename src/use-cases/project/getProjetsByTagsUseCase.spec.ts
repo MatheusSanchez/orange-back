@@ -4,6 +4,7 @@ import { InMemoryProjectRepository } from '../../repositories/in-memory-db/inMem
 
 import { GetProjectsByTagsUseCase } from './getProjetsByTagsUseCase'
 import { User } from '@prisma/client'
+import { defaultUserAvatarUrl } from '../../utils/tests/defaultUserAvatarUrl'
 
 let projectRepository: InMemoryProjectRepository
 let getProjectsByTagsUseCase: GetProjectsByTagsUseCase
@@ -49,7 +50,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
         tags: ['react', 'node', 'typescript'],
       }),
@@ -92,7 +93,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
       }),
     )
@@ -103,7 +104,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
       }),
     )
@@ -114,7 +115,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
       }),
     )
@@ -156,7 +157,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
       }),
     )
@@ -167,7 +168,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
       }),
     )
@@ -178,7 +179,7 @@ describe('Get Project By Tags', () => {
         user: {
           name: newUser.name,
           surname: newUser.surname,
-          avatar_url: null,
+          avatar_url: defaultUserAvatarUrl,
         },
       }),
     )
