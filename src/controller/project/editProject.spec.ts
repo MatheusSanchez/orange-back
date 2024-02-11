@@ -28,7 +28,7 @@ describe('edit Project E2E', () => {
     }
 
     const createProjectResponse = await request(app.server)
-      .post(`/user/${userAuth.userId}/project`)
+      .post(`/user/project`)
       .send(createProjectBody)
       .set('Authorization', `Bearer ${userAuth.token}`)
 

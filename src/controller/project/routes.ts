@@ -26,7 +26,7 @@ export async function projectRoutes(app: FastifyInstance) {
     { onRequest: verifyJWT },
     addImageProject,
   )
-  app.post('/user/:userId/project', { onRequest: verifyJWT }, createProject)
+  app.post('/user/project', { onRequest: verifyJWT }, createProject)
 
   app.put('/project/:projectId/edit', { onRequest: verifyJWT }, editProject)
   app.delete('/project/:projectId', { onRequest: verifyJWT }, deleteProjectById)

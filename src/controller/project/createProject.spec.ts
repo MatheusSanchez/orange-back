@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
-import { randomUUID } from 'crypto'
 import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
 
 let userAuth: {
@@ -28,7 +27,7 @@ describe('createProject E2E', () => {
     }
 
     const createProjectResponse = await request(app.server)
-      .post(`/user/${userAuth.userId}/project`)
+      .post(`/user/project`)
       .send(createProjectBody)
       .set('Authorization', `Bearer ${userAuth.token}`)
 
@@ -37,7 +36,7 @@ describe('createProject E2E', () => {
     expect(createProjectResponse.body.project.tags).toEqual(['react', 'node'])
   })
 
-  it('should not be able to create a project without user', async () => {
+  it('should not be able to create a project without authenticate', async () => {
     const createProjectBody = {
       title: 'Squad40 Project',
       tags: ['react', 'node'],
@@ -45,15 +44,15 @@ describe('createProject E2E', () => {
       description: 'Squad40 description',
     }
 
-    const userId = randomUUID()
-
     const response = await request(app.server)
-      .post(`/user/${userId}/project`)
+      .post(`/user/project`)
       .send(createProjectBody)
 
-      .set('Authorization', `Bearer ${userAuth.token}`)
-
-    expect(response.body.message).toContain('User was not Found !')
-    expect(response.status).toEqual(404)
+    expect(response.status).toEqual(401)
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: 'Unauthorized',
+      }),
+    )
   })
 })
