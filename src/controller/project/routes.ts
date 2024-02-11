@@ -18,7 +18,7 @@ export async function projectRoutes(app: FastifyInstance) {
   })
 
   app.post('/projects/tags', { onRequest: verifyJWT }, getProjectsByTags)
-  app.get('/projects/:userId', { onRequest: verifyJWT }, getProjectsByUserId)
+  app.get('/projects', { onRequest: verifyJWT }, getProjectsByUserId)
   app.get('/project/:projectId', { onRequest: verifyJWT }, getProjectsById)
 
   app.post(
