@@ -11,11 +11,7 @@ export async function addImageUser(
 ) {
   const userRepository = new PrismaUsersRepository()
   const addImageToUserUseCase = new AddImageToUserUseCase(userRepository)
-  const addImageUserParamsSchema = z.object({
-    userId: z.string().uuid(),
-  })
 
-  const { userId } = addImageUserParamsSchema.parse(request.params)
   const photo = await request.file()
 
   if (photo === undefined) {
@@ -23,7 +19,10 @@ export async function addImageUser(
   }
 
   try {
-    const { user } = await addImageToUserUseCase.execute({ userId, photo })
+    const { user } = await addImageToUserUseCase.execute({
+      userId: request.user.sub,
+      photo,
+    })
     return response
       .status(200)
       .send({ user: { ...user, password_hash: undefined } })
