@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
 import { ResourceNotFoundError } from '../../use-cases/errors/ResourceNotFoundError'
 import { AwsS3Error } from '../../use-cases/errors/AwsS3Error'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
