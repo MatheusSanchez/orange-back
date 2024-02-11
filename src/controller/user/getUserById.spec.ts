@@ -2,12 +2,6 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
 import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
-import { randomUUID } from 'crypto'
-
-let userAuth: {
-  token: string
-  userId: string
-}
 
 describe('Get User By Id E2E', () => {
   beforeAll(async () => {
