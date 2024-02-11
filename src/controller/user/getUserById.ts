@@ -10,16 +10,10 @@ export async function getUserById(
   const userRepository = new PrismaUsersRepository()
   const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
 
-  try {
-    const { user } = await getUserByIdUseCase.execute({
-      id: request.user.sub,
-    })
-    return response
-      .status(200)
-      .send({ user: { ...user, password_hash: undefined } })
-  } catch (error) {
-    if (error instanceof ResourceNotFoundError) {
-      return response.status(404).send()
-    }
-  }
+  const { user } = await getUserByIdUseCase.execute({
+    id: request.user.sub,
+  })
+  return response
+    .status(200)
+    .send({ user: { ...user, password_hash: undefined } })
 }

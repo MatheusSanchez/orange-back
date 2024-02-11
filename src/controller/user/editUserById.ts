@@ -19,20 +19,14 @@ export async function editUserById(
   const userRepository = new PrismaUsersRepository()
   const editUserUseCase = new EditUserUseCase(userRepository)
 
-  try {
-    const { user } = await editUserUseCase.execute({
-      name,
-      surname,
-      country,
-      userId: request.user.sub,
-    })
+  const { user } = await editUserUseCase.execute({
+    name,
+    surname,
+    country,
+    userId: request.user.sub,
+  })
 
-    return response
-      .status(200)
-      .send({ user: { ...user, password_hash: undefined } })
-  } catch (error) {
-    if (error instanceof ResourceNotFoundError) {
-      return response.status(404).send({ error: 'User was not Found !' })
-    }
-  }
+  return response
+    .status(200)
+    .send({ user: { ...user, password_hash: undefined } })
 }
