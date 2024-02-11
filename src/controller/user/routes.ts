@@ -16,7 +16,7 @@ export async function userRoutes(app: FastifyInstance) {
   })
   app.post('/user', registerUser)
   app.get('/user', { onRequest: verifyJWT }, getUserById)
-  app.put('/user/:userId/edit', { onRequest: verifyJWT }, editUserById)
+  app.put('/user/edit', { onRequest: verifyJWT }, editUserById)
   app.put('/user/edit/pass', { onRequest: verifyJWT }, editUserPassword)
 
   app.post('/user/:userId/photo', { onRequest: verifyJWT }, addImageUser)

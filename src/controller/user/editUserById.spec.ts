@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '../../app'
-import { randomUUID } from 'crypto'
 import { createAndAuthenticateUser } from '../../utils/tests/create-and-authenticate-user'
 
 let userAuth: {
@@ -21,7 +20,7 @@ describe('edit User E2E', () => {
 
   it('should be able to edit a user', async () => {
     const editUserResponse = await request(app.server)
-      .put(`/user/${userAuth.userId}/edit`)
+      .put(`/user/edit`)
       .send({
         name: 'newName',
         surname: 'surname',
@@ -40,21 +39,18 @@ describe('edit User E2E', () => {
     )
   })
 
-  it('should not be able to edit a user that does not exist', async () => {
-    const editUserResponse = await request(app.server)
-      .put(`/user/${randomUUID()}/edit`)
-      .set('Authorization', `Bearer ${userAuth.token}`)
-      .send({
-        name: 'newName',
-        surname: 'surname',
-        country: 'country',
-      })
+  it('should not be able to edit a user without authentication', async () => {
+    const editUserResponse = await request(app.server).put(`/user/edit`).send({
+      name: 'newName',
+      surname: 'surname',
+      country: 'country',
+    })
 
-    expect(editUserResponse.statusCode).toEqual(404)
+    expect(editUserResponse.statusCode).toEqual(401)
 
     expect(editUserResponse.body).toEqual(
       expect.objectContaining({
-        error: 'User was not Found !',
+        message: 'Unauthorized',
       }),
     )
   })

@@ -14,12 +14,7 @@ export async function editUserById(
     country: z.string(),
   })
 
-  const editUserParamsSchema = z.object({
-    userId: z.string().uuid(),
-  })
-
   const { name, surname, country } = editUserBodySchema.parse(request.body)
-  const { userId } = editUserParamsSchema.parse(request.params)
 
   const userRepository = new PrismaUsersRepository()
   const editUserUseCase = new EditUserUseCase(userRepository)
@@ -29,7 +24,7 @@ export async function editUserById(
       name,
       surname,
       country,
-      userId,
+      userId: request.user.sub,
     })
 
     return response
